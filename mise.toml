@@ -2,4 +2,4 @@
 python.uv_venv_auto = "source"
 
 [tasks]
-run = "uvicorn main:app --reload --port 10000"
+run = "uvicorn src.main:app --reload --port 10000"
