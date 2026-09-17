@@ -14,7 +14,7 @@ import { initHeader } from '../auth.js';
 const TEMPLATE = /* html */ `
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="logo" href="index.html">TÊN-SẢN-PHẨM</a>
+    <a class="logo" href="index.html">WEBCEPI</a>
 
     <form class="site-header__search" action="list.html" method="get" role="search">
       <label class="visually-hidden" for="hq">Tìm kiếm</label>

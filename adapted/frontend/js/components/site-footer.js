@@ -13,7 +13,7 @@ const TEMPLATE = /* html */ `
   <div class="container site-footer__grid">
 
     <div class="site-footer__brand">
-      <p class="logo">TÊN-SẢN-PHẨM</p>
+      <p class="logo">WEBCEPI</p>
       <p class="site-footer__tagline">Một dòng mô tả sản phẩm của nhóm.</p>
     </div>
 
@@ -47,7 +47,7 @@ const TEMPLATE = /* html */ `
   </div>
 
   <div class="container site-footer__bottom">
-    <p>© ${YEAR} TÊN-SẢN-PHẨM — Đồ án môn Web Design &amp; Programming, lớp AI66B.</p>
+    <p>© ${YEAR} WEBCEPI — Đồ án môn Web Design &amp; Programming, lớp AI66B.</p>
   </div>
 </footer>`;
 

@@ -15,7 +15,7 @@ async function load() {
   if (!id) { location.href = '404.html'; return; }
   try {
     const item = await getItem(id);
-    document.title = `${item.title} — TÊN-SẢN-PHẨM`;
+    document.title = `${item.title} — WEBCEPI`;
     document.getElementById('title').textContent = item.title;
     // TODO: điền các trường còn lại — nhớ dùng textContent, không innerHTML
     main.hidden = false;
