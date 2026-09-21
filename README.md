@@ -4,12 +4,12 @@ với milestone 1, sẽ chỉ dùng html và link các bài khác nhau cũng b�
 
 ## Thành viên :
 
-| name          | github         | role   |
-| ------------- | -------------- | ------ |
-| bế Thành Đạt  | th3dummyking   | leader |
-| Phan Hải Đăng | phandang2310   | member |
-| minhquang     | iambadwithname | member |
-
+| name           | github         | role   |
+| -------------- | -------------- | ------ |
+| bế Thành Đạt   | th3dummyking   | leader |
+| Phan Hải Đăng  | phandang2310   | member |
+| minhquang      | iambadwithname | member |
+| Bùi Khang Long | longbk761-bot  | member |
 ## goal
 
     Nền tảng chia sẻ công thức nấu ăn là một website cho phép người dùng
