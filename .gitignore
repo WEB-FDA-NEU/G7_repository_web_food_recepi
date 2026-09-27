@@ -1,0 +1,4 @@
+# .gitignore
+# .python-version
+# mise.toml
+**/__pycache__

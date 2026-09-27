@@ -3,10 +3,10 @@ from sqlalchemy import func, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, selectinload
 
-from database import get_db
-from deps import get_current_user
-from models import Ingredient, Recipe, SavedRecipe, Step, User
-from schemas import RecipeCard, RecipeCreate, RecipeDetail, RecipePage
+from ..database import get_db
+from ..deps import get_current_user
+from ..models import Ingredient, Recipe, SavedRecipe, Step, User
+from ..schemas import RecipeCard, RecipeCreate, RecipeDetail, RecipePage
 
 router = APIRouter(prefix="/api/recipes", tags=["recipes"])
 me_router = APIRouter(prefix="/me", tags=["me"])
@@ -44,7 +44,11 @@ def list_recipes(
 
     total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
 
-    stmt = stmt.order_by(Recipe.created_at.desc()).offset((page - 1) * page_size).limit(page_size)
+    stmt = (
+        stmt.order_by(Recipe.created_at.desc())
+        .offset((page - 1) * page_size)
+        .limit(page_size)
+    )
     recipes = db.scalars(_with_relations(stmt)).unique().all()
 
     return RecipePage(items=recipes, total=total, page=page, page_size=page_size)
@@ -79,7 +83,8 @@ def create_recipe(
         owner_id=user.id,
     )
     recipe.ingredients = [
-        Ingredient(position=i, qty=ing.qty, item=ing.item) for i, ing in enumerate(payload.ingredients)
+        Ingredient(position=i, qty=ing.qty, item=ing.item)
+        for i, ing in enumerate(payload.ingredients)
     ]
     recipe.steps = [
         Step(position=i, title=s.title, text=s.text, timer_minutes=s.timer_minutes)
@@ -97,7 +102,9 @@ def my_recipes(user: User = Depends(get_current_user), db: Session = Depends(get
     """Công thức của chính người dùng đang đăng nhập — bao gồm cả bản draft,
     khác với /api/recipes vốn chỉ trả về những bài đã published."""
     stmt = _with_relations(
-        select(Recipe).where(Recipe.owner_id == user.id).order_by(Recipe.created_at.desc())
+        select(Recipe)
+        .where(Recipe.owner_id == user.id)
+        .order_by(Recipe.created_at.desc())
     )
     return db.scalars(stmt).unique().all()
 
@@ -114,7 +121,11 @@ def list_saved(user: User = Depends(get_current_user), db: Session = Depends(get
 
 
 @me_router.post("/saved/{recipe_id}", status_code=status.HTTP_201_CREATED)
-def save_recipe(recipe_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def save_recipe(
+    recipe_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     """Nút 'Save recipe' ở trang chi tiết. Bấm lại lần nữa vẫn trả về 201 —
     idempotent — thay vì báo lỗi trùng, vì với người dùng thì bấm Save hai lần
     và Save một lần nên có kết quả giống nhau."""
@@ -134,11 +145,16 @@ def save_recipe(recipe_id: int, user: User = Depends(get_current_user), db: Sess
 
 
 @me_router.delete("/saved/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)
-def unsave_recipe(recipe_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def unsave_recipe(
+    recipe_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     row = db.scalar(
-        select(SavedRecipe).where(SavedRecipe.user_id == user.id, SavedRecipe.recipe_id == recipe_id)
+        select(SavedRecipe).where(
+            SavedRecipe.user_id == user.id, SavedRecipe.recipe_id == recipe_id
+        )
     )
     if row:
         db.delete(row)
         db.commit()
-    return None
