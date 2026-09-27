@@ -1,6 +1,6 @@
 # .gitignore
 .python-version
-mise.toml
+# mise.toml
 pyproject.toml
 uv.lock
 **/__pycache__

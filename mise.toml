@@ -1,0 +1,5 @@
+[settings]
+python.uv_venv_auto = "source"
+
+[tasks]
+run = "uvicorn src.main:app --reload --port 10000"
