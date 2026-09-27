@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found — Ladle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="404">
+
+  <site-header class="site-header"></site-header>
+
+  <main class="container">
+    <div class="error-shell">
+      <p class="hero__eyebrow">404</p>
+      <h1 class="h1">This page fell off the counter.</h1>
+      <p class="lede" style="margin-bottom:var(--space-6);">The recipe or page you're after doesn't exist, or the link's gone stale.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="index.html">Back to home</a>
+        <a class="btn btn--ghost" href="list.html">Browse recipes</a>
+      </div>
+    </div>
+  </main>
+
+  <site-footer class="site-footer"></site-footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="components/site-header.js"></script>
+  <script src="components/site-footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe — Ladle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="detail">
+
+  <site-header class="site-header"></site-header>
+
+  <main class="container section">
+    <div id="detail-header" style="margin-bottom:var(--space-6);">
+      <div class="skeleton" style="height:16px;width:120px;margin-bottom:1rem;"></div>
+      <div class="skeleton" style="height:48px;width:70%;margin-bottom:1rem;"></div>
+      <div class="skeleton" style="height:20px;width:90%;"></div>
+    </div>
+
+    <div class="detail-layout">
+      <div>
+        <h2 class="h2" style="font-size:var(--text-lg);margin-bottom:var(--space-4);">Method</h2>
+        <ol class="steps" id="steps-container"></ol>
+
+        <div id="notes-block" hidden style="margin-top:var(--space-6);">
+          <h3 style="margin-bottom:var(--space-2);">Notes</h3>
+          <div id="notes-container"></div>
+        </div>
+      </div>
+
+      <aside id="detail-aside" class="receipt">
+        <h2 class="receipt__title">Ingredients</h2>
+        <ul class="receipt__list" id="ingredients-list"></ul>
+        <div class="receipt__servings">
+          Servings
+          <span class="stepper">
+            <button type="button" data-action="servings-down" aria-label="Decrease servings">−</button>
+            <span class="stepper__value" id="servings-value">—</span>
+            <button type="button" data-action="servings-up" aria-label="Increase servings">+</button>
+          </span>
+        </div>
+        <button class="btn btn--primary btn--full" id="save-btn" type="button" style="margin-top:var(--space-5);">Save recipe</button>
+      </aside>
+    </div>
+  </main>
+
+  <site-footer class="site-footer"></site-footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/render.js"></script>
+  <script src="components/site-header.js"></script>
+  <script src="components/site-footer.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
