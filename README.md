@@ -29,10 +29,8 @@ Người dùng có thể tạo công thức mới với danh sách nguyên liệ
 
 - **Python 3.11 trở lên** — kiểm tra bằng `python --version` (macOS/Linux) hoặc `python --version` / `py --version` (Windows).
 - **[uv](https://docs.astral.sh/uv/)** — trình quản lý gói và môi trường ảo cho Python, dùng để cài dependency và chạy dự án.
+- **[mise](https://mise.jdx.dev/installing-mise.html)** —(optional) also an env/tool manager.
 - **Git** — để tải mã nguồn về máy.
-
-Nếu máy chưa có Python 3.11+, có thể để `uv` tự tải và quản lý Python giúp bạn (xem bước 3).
-
 ---
 
 ## 1. Cài đặt uv
@@ -56,19 +54,11 @@ uv --version
 
 ## 2. Tải dự án về máy
 
-** macOS / Linux**:
-```bash
+** macOS / Linux/Windows**:
+```
 git clone https://github.com/<tên-tổ-chức-hoặc-user>/web_design_and_program.git
 cd web_design_and_program
 ```
-
-** Windows** (PowerShell):
-```powershell
-git clone https://github.com/<tên-tổ-chức-hoặc-user>/web_design_and_program.git
-cd web_design_and_program
-```
-
-> Không có Git? Vào trang GitHub của dự án → nút **Code** → **Download ZIP**, rồi giải nén ra và mở terminal tại thư mục đó.
 
 ---
 
@@ -105,41 +95,17 @@ source .venv/bin/activate
 
 Cách đơn giản nhất: mở trực tiếp file `frontend/index.html` bằng trình duyệt.
 
-Nếu muốn chạy qua một local server (khuyên dùng, để đường dẫn giữa các trang hoạt động đúng như khi deploy):
-
-** macOS / Linux**:
+** macOS / Linux/Windows**:
 ```bash
 uv run python -m http.server 5500 --directory frontend
 ```
 
-** Windows** (PowerShell):
-```powershell
-uv run python -m http.server 5500 --directory frontend
-```
-
-Sau đó mở trình duyệt vào: **http://localhost:5500**
 
 ### Chạy backend (từ các milestone có API)
 
-** macOS / Linux**:
-```bash
-uv run uvicorn main:app --reload
-```
+** macOS / Linux/ Windows**:
+see [mise.tom](mise.toml)
 
-** Windows** (PowerShell):
-```powershell
-uv run uvicorn main:app --reload
-```
-
-Mặc định server chạy tại **http://127.0.0.1:8000** (chỉ máy này truy cập được). Tài liệu API tự sinh tại **http://127.0.0.1:8000/docs**.
-
-Muốn cho máy khác trong cùng mạng Wi-Fi truy cập, thêm `--host 0.0.0.0`:
-
-```bash
-uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-```
-
-rồi vào bằng địa chỉ IP của máy chạy server, ví dụ `http://192.168.1.42:8000` (xem IP bằng `ipconfig` trên Windows hoặc `ifconfig`/`ipconfig getifaddr en0` trên macOS).
 
 ---
 
@@ -151,4 +117,4 @@ rồi vào bằng địa chỉ IP của máy chạy server, ví dụ `http://192
 | Tải dự án         | `git clone ...`                                 | `git clone ...`                                 |
 | Cài dependencies  | `uv sync`                                       | `uv sync`                                       |
 | Kích hoạt venv (tuỳ chọn) | `source .venv/bin/activate`             | `.venv\Scripts\Activate.ps1`                    |
-| Chạy backend      | `uv run uvicorn main:app --reload`              | `uv run uvicorn main:app --reload`              |
+| Chạy backend      | `uv run uvicorn main_projects.backend.main:app --reload`              | `uv run uvicorn main:app --reload`              |
