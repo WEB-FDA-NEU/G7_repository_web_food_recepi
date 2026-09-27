@@ -1,0 +1,70 @@
+/* ==========================================================================
+   Tokens — the single source of truth for color, type, spacing, layout.
+   Change a value here and it ripples through the whole site.
+   ========================================================================== */
+
+:root {
+  /* ---- Color: warm ledger-paper base, one confident accent (tomato),
+     one secondary (sage), one sparing highlight (mustard) ---- */
+  --color-paper:        #F3EFE3;
+  --color-surface:      #FBF9F2;
+  --color-surface-dim:  #ECE6D4;
+  --color-ink:          #23241F;
+  --color-ink-soft:     #5B584C;
+  --color-ink-faint:    #8B876F;
+  --color-line:         #D8D2BE;
+  --color-line-strong:  #B9B190;
+
+  --color-accent:       #A6301F; /* tomato — CTAs, links, active states */
+  --color-accent-dark:  #7C2216;
+  --color-accent-soft:  #F1DAD3;
+
+  --color-sage:         #5B6B4F; /* herb — tags, secondary accents */
+  --color-sage-soft:    #E1E6D9;
+
+  --color-mustard:      #C08A1E; /* rating stars, sparing highlight */
+
+  --color-error:        #A6301F;
+  --color-success:      #4F6B45;
+
+  /* ---- Type ---- */
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --text-xs:   0.75rem;   /* 12px */
+  --text-sm:   0.875rem;  /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-md:   1.125rem;  /* 18px */
+  --text-lg:   1.375rem;  /* 22px */
+  --text-xl:   1.875rem;  /* 30px */
+  --text-2xl:  2.5rem;    /* 40px */
+  --text-3xl:  3.5rem;    /* 56px */
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 6.5rem;
+
+  /* ---- Layout ---- */
+  --max-width: 1120px;
+  --max-width-prose: 640px;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --border-hairline: 1px solid var(--color-line);
+  --border-hairline-strong: 1px solid var(--color-line-strong);
+
+  /* ---- Motion ---- */
+  --ease-standard: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+}
