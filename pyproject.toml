@@ -4,22 +4,28 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "mq", email = "minhquang2006m@gmail.com" }]
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 dependencies = [
-    "bcrypt==4.2.1",
-    "fastapi==0.115.6",
-    "httpx==0.28.1",
-    "psycopg2-binary==2.9.10",
-    "pydantic[email]==2.10.4",
-    "python-jose[cryptography]==3.3.0",
-    "python-multipart==0.0.20",
-    "sqlalchemy==2.0.36",
-    "uvicorn[standard]==0.34.0",
+    "bcrypt>=5.0.0",
+    "fastapi>=0.141.1",
+    "pydantic[email]>=2.13.5",
+    "python-jose[cryptography]>=3.5.0",
+    "sqlalchemy>=2.1.1",
+    "uvicorn>=0.54.0",
+    #     "bcrypt==4.2.1",
+    # "fastapi==0.115.6",
+    # "httpx==0.28.1",
+    # "psycopg2-binary==2.9.10",
+    # "pydantic[email]==2.10.4",
+    # "python-jose[cryptography]==3.3.0",
+    # "python-multipart==0.0.20",
+    # "sqlalchemy==2.0.36",
+    # "uvicorn[standard]==0.34.0",
 ]
 
 [project.scripts]
-g7-repository-web-food-recepi = "g7_repository_web_food_recepi:main"
+g7-repository-web-food-recepi = "main"
 
 # [build-system]
-# requires = ["uv_build>=0.12.15,<0.13.0"]
+# requires = ["uv_build>=0.12.17,<0.13.0"]
 # build-backend = "uv_build"
