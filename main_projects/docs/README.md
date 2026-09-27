@@ -4,12 +4,12 @@ Nền tảng chia sẻ công thức nấu ăn — một website cho phép ngư�
 
 ## Thành viên
 
-| name           | github         | role   |
-| -------------- | -------------- | ------ |
-| bế Thành Đạt   | th3dummyking   | leader |
-| Phan Hải Đăng  | phandang2310   | member |
-| minhquang      | iambadwithname | member |
-| Bùi Khang Long | longbk761-bot  | member |
+| name           | github         | role   | parts           |
+| -------------- | -------------- | ------ | --------------- |
+| bế Thành Đạt   | th3dummyking   | leader | main, html, css |
+| Phan Hải Đăng  | phandang2310   | member | js, json mock   |
+| minhquang      | iambadwithname | member | backend         |
+| Bùi Khang Long | longbk761-bot  | member | backend         |
 
 ## Mục tiêu
 
