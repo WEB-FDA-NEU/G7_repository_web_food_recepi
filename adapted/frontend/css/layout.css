@@ -1,117 +1,226 @@
+/* ==========================================================================
+   Layout — page shell, containers, the structural grid.
+   Component-level styling (cards, buttons, forms) lives in components.css.
+   ========================================================================== */
+
 body {
-  font-family: var(--font);
-  background: var(--c-bg);
-  color: var(--c-text);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
-  width: min(100% - 2rem, var(--container));
+  width: 100%;
+  max-width: var(--max-width);
   margin-inline: auto;
+  padding-inline: var(--space-5);
 }
-
-/* ---- Header ----
-   <site-header> là custom element: mặc định trình duyệt coi nó là inline.
-   Phải khai display:block, và min-height để trang không GIẬT khi component
-   gắn vào (module JS chạy sau khi HTML parse xong). */
-site-header { display: block; min-height: 64px; }
-@media (max-width: 640px) { site-header { min-height: 108px; } }
-
-.site-header {
-  border-bottom: 1px solid var(--c-border);
-  background: var(--c-bg);
-  position: sticky; top: 0; z-index: 10;
-}
-.site-header__inner {
-  display: flex; align-items: center; gap: var(--sp-4);
-  padding-block: var(--sp-3);
-}
-.logo { font-weight: 700; font-size: 1.25rem; text-decoration: none; }
-.site-header__search { flex: 1; min-width: 0; }
-.site-header nav { display: flex; align-items: center; gap: var(--sp-3); }
 
 @media (max-width: 640px) {
-  .site-header__inner { flex-wrap: wrap; }
-  .site-header__search { order: 3; flex-basis: 100%; }
+  .container { padding-inline: var(--space-4); }
 }
 
-/* ---- Bố cục trang tìm kiếm: sidebar + lưới kết quả ---- */
-/* minmax(0, 1fr) chứ KHÔNG phải 1fr: grid item mặc định có min-width:auto,
-   nội dung rộng hơn cột sẽ đẩy cả lưới tràn ngang trên điện thoại. */
-.search-layout {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-  gap: var(--sp-5);
-  padding-block: var(--sp-5);
-}
-@media (max-width: 860px) {
-  .search-layout { grid-template-columns: minmax(0, 1fr); }
+main {
+  flex: 1;
 }
 
-/* ---- Lưới thẻ: tự xuống dòng, KHÔNG cần media query ---- */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--sp-4);
-}
-
-.page { padding-block: var(--sp-6); }
-.stack > * + * { margin-top: var(--sp-4); }
-
-/* ═══════════════════════════════════════════════════════════
-   LAYOUT TRANG CỬA HÀNG  (shop.html)
-   Ba vùng: sidebar bộ lọc · nội dung chính · footer nhiều cột
-   ═══════════════════════════════════════════════════════════ */
-
-.shop-layout > *,
-.search-layout > * { min-width: 0; }   /* chặn nội dung đẩy tràn cột */
-
-.shop-layout {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);   /* minmax(0,1fr) chặn lưới bị tràn */
-  gap: var(--sp-5);
-  align-items: start;
-  padding-block: var(--sp-5);
-}
-@media (max-width: 860px) {
-  .shop-layout { grid-template-columns: minmax(0, 1fr); }
-}
-
-/* Sidebar dính khi cuộn trên desktop, ẩn/hiện bằng nút trên mobile */
-.shop-sidebar {
+/* ---- Site header ---- */
+.site-header {
+  border-bottom: var(--border-hairline);
+  background: var(--color-paper);
   position: sticky;
-  top: 84px;                       /* = chiều cao header + khoảng thở */
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius);
-  padding: var(--sp-4);
-  background: var(--c-bg);
-}
-@media (max-width: 860px) {
-  .shop-sidebar { position: static; display: none; }
-  .shop-sidebar.is-open { display: block; }
+  top: 0;
+  z-index: 20;
 }
 
-/* ---- Footer ---- */
-site-footer { display: block; margin-top: var(--sp-7); }
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding-block: var(--space-4);
+}
 
+.site-header__brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.site-header__brand-mark {
+  color: var(--color-accent);
+}
+
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.site-header__links {
+  display: flex;
+  gap: var(--space-5);
+  font-size: var(--text-sm);
+}
+
+.site-header__links a {
+  padding-block: var(--space-1);
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--duration-base) var(--ease-standard);
+}
+
+.site-header__links a:hover,
+.site-header__links a[aria-current="page"] {
+  border-color: var(--color-accent);
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.site-header__toggle {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .site-header__links { display: none; }
+  .site-header__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+  }
+  .site-header--open .site-header__links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    border-bottom: var(--border-hairline);
+    padding: var(--space-4) var(--space-5);
+    gap: var(--space-4);
+  }
+}
+
+/* ---- Site footer ---- */
 .site-footer {
-  border-top: 1px solid var(--c-border);
-  background: var(--c-surface);
-  padding-top: var(--sp-6);
+  border-top: var(--border-hairline);
+  margin-top: var(--space-9);
+  padding-block: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
 }
-.site-footer__grid {
-  display: grid;
-  grid-template-columns: 2fr repeat(3, 1fr);
-  gap: var(--sp-5);
-  padding-bottom: var(--sp-5);
-}
-@media (max-width: 860px) { .site-footer__grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 520px) { .site-footer__grid { grid-template-columns: 1fr; } }
 
-.site-footer__tagline { color: var(--c-muted); font-size: .875rem; margin-top: var(--sp-2); }
-.site-footer__title   { font-size: .8rem; text-transform: uppercase; letter-spacing: .04em;
-                        color: var(--c-muted); margin-bottom: var(--sp-3); }
-.site-footer__col ul  { list-style: none; padding: 0; display: grid; gap: var(--sp-2); }
-.site-footer__col a   { text-decoration: none; font-size: .9rem; }
-.site-footer__col a:hover { text-decoration: underline; }
-.site-footer__bottom  { border-top: 1px solid var(--c-border); padding-block: var(--sp-4);
-                        font-size: .8rem; color: var(--c-muted); }
+.site-footer__grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.site-footer__brand {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  font-size: var(--text-md);
+}
+
+.site-footer__cols {
+  display: flex;
+  gap: var(--space-7);
+  flex-wrap: wrap;
+}
+
+.site-footer__col h3 {
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+  margin-bottom: var(--space-2);
+}
+
+.site-footer__col a {
+  display: block;
+  padding-block: var(--space-1);
+  color: var(--color-ink-soft);
+}
+
+.site-footer__col a:hover { color: var(--color-accent); }
+
+.site-footer__base {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: var(--border-hairline);
+}
+
+/* ---- Grids ---- */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+@media (max-width: 900px) {
+  .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+  .recipe-grid { grid-template-columns: 1fr; }
+}
+
+/* ---- Section rhythm ---- */
+.section {
+  padding-block: var(--space-7);
+}
+
+.section--tight {
+  padding-block: var(--space-6);
+}
+
+.section__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-hairline);
+}
+
+/* ---- Detail page two-column layout ---- */
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-7);
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .detail-layout { grid-template-columns: 1fr; }
+}
+
+/* ---- Narrow form page ---- */
+.auth-shell {
+  max-width: 420px;
+  margin-inline: auto;
+  padding-block: var(--space-8);
+}
+
+/* ---- 404 ---- */
+.error-shell {
+  max-width: var(--max-width-prose);
+  margin-inline: auto;
+  text-align: left;
+  padding-block: var(--space-9);
+}

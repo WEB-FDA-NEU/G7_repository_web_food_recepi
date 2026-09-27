@@ -1,9 +1,74 @@
+/* ==========================================================================
+   Reset — minimal, modern. Strips browser defaults without erasing
+   semantics (focus rings stay; list markers etc. are removed deliberately).
+   ========================================================================== */
+
 *, *::before, *::after { box-sizing: border-box; }
+
 * { margin: 0; }
-html { -webkit-text-size-adjust: 100%; }
-body { line-height: 1.5; -webkit-font-smoothing: antialiased; }
-img, picture, svg, video { display: block; max-width: 100%; }
-input, button, textarea, select { font: inherit; color: inherit; }
-p, h1, h2, h3, h4 { overflow-wrap: break-word; }
-ul[class] { list-style: none; padding: 0; }
-a { color: inherit; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100svh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: inherit;
+  font-size: inherit;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent, #A6301F);
+  outline-offset: 2px;
+}
