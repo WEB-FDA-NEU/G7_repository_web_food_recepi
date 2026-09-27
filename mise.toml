@@ -2,4 +2,8 @@
 python.uv_venv_auto = "source"
 
 [tasks]
+#sync env
+sync = "uv sync"
+#run env
 run = "uvicorn main_projects.backend.main:app --reload --port 10000"
+#

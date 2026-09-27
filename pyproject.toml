@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [project.scripts]
-g7-repository-web-food-recepi = "g7_repository_web_food_recepi:main"
+g7-repository-web-food-recepi = "main"
 
 # [build-system]
 # requires = ["uv_build>=0.12.17,<0.13.0"]
