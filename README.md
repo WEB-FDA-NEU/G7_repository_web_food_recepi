@@ -31,21 +31,25 @@ Người dùng có thể tạo công thức mới với danh sách nguyên liệ
 - **[uv](https://docs.astral.sh/uv/)** — trình quản lý gói và môi trường ảo cho Python, dùng để cài dependency và chạy dự án.
 - **[mise](https://mise.jdx.dev/installing-mise.html)** —(optional) also an env/tool manager.
 - **Git** — để tải mã nguồn về máy.
+
 ---
 
 ## 1. Cài đặt uv
 
 ** macOS / Linux** (Terminal):
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ** Windows** (PowerShell):
+
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 Sau khi cài xong, mở lại terminal và kiểm tra:
+
 ```bash
 uv --version
 ```
@@ -55,6 +59,7 @@ uv --version
 ## 2. Tải dự án về máy
 
 ** macOS / Linux/Windows**:
+
 ```
 git clone https://github.com/<tên-tổ-chức-hoặc-user>/web_design_and_program.git
 cd web_design_and_program
@@ -71,6 +76,7 @@ uv sync
 ```
 
 Lệnh này sẽ:
+
 - tự tải đúng phiên bản Python cần thiết nếu máy chưa có,
 - tạo một môi trường ảo `.venv` riêng cho dự án,
 - cài toàn bộ thư viện đúng phiên bản đã khai báo.
@@ -78,11 +84,13 @@ Lệnh này sẽ:
 Không cần tự kích hoạt (activate) môi trường ảo — dùng `uv run ...` ở bước dưới, `uv` sẽ tự chạy trong đúng môi trường đó. Nếu muốn kích hoạt thủ công (ví dụ để trình biên tập code nhận đúng thư viện):
 
 ** macOS / Linux**:
+
 ```bash
 source .venv/bin/activate
 ```
 
 ** Windows** (PowerShell):
+
 ```powershell
 .venv\Scripts\Activate.ps1
 ```
@@ -96,25 +104,24 @@ source .venv/bin/activate
 Cách đơn giản nhất: mở trực tiếp file `frontend/index.html` bằng trình duyệt.
 
 ** macOS / Linux/Windows**:
+
 ```bash
 uv run python -m http.server 5500 --directory frontend
 ```
-
 
 ### Chạy backend (từ các milestone có API)
 
 ** macOS / Linux/ Windows**:
 see [mise.tom](mise.toml)
 
-
 ---
 
 ## Tóm tắt nhanh
 
-| Bước              | macOS / Linux                                  | Windows (PowerShell)                           |
-| ----------------- | ----------------------------------------------- | ----------------------------------------------- |
-| Cài uv            | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 \| iex"` |
-| Tải dự án         | `git clone ...`                                 | `git clone ...`                                 |
-| Cài dependencies  | `uv sync`                                       | `uv sync`                                       |
-| Kích hoạt venv (tuỳ chọn) | `source .venv/bin/activate`             | `.venv\Scripts\Activate.ps1`                    |
-| Chạy backend      | `uv run uvicorn main_projects.backend.main:app --reload`              | `uv run uvicorn main:app --reload`              |
+| Bước                      | macOS / Linux                                            | Windows (PowerShell)                                                                  |
+| ------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Cài uv                    | `curl -LsSf https://astral.sh/uv/install.sh \| sh`       | `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 \| iex"` |
+| Tải dự án                 | `git clone ...`                                          | `git clone ...`                                                                       |
+| Cài dependencies          | `uv sync`                                                | `uv sync`                                                                             |
+| Kích hoạt venv (tuỳ chọn) | `source .venv/bin/activate`                              | `.venv\Scripts\Activate.ps1`                                                          |
+| Chạy backend              | `uv run uvicorn main_projects.backend.main:app --reload` | `uv run uvicorn main:app --reload`                                                    |
