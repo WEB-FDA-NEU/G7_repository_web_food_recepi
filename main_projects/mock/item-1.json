@@ -1,0 +1,34 @@
+{
+  "id": 1,
+  "title": "Brown Butter Miso Cookies",
+  "category": "baking",
+  "minutes": 35,
+  "servings": 14,
+  "difficulty": "Easy",
+  "author": "Priya Nair",
+  "rating": 4.8,
+  "ratingCount": 212,
+  "summary": "Chewy cookies with nutty browned butter and a savoury edge from white miso. The miso doesn't read as 'miso' here — it just makes the cookie taste more like itself.",
+  "tags": ["dessert", "cookies", "make-ahead"],
+  "ingredients": [
+    { "qty": "170 g", "item": "unsalted butter" },
+    { "qty": "3 tbsp", "item": "white miso paste" },
+    { "qty": "200 g", "item": "brown sugar" },
+    { "qty": "50 g", "item": "granulated sugar" },
+    { "qty": "1", "item": "large egg, plus 1 yolk" },
+    { "qty": "2 tsp", "item": "vanilla extract" },
+    { "qty": "260 g", "item": "all-purpose flour" },
+    { "qty": "1 tsp", "item": "baking soda" },
+    { "qty": "1/2 tsp", "item": "flaky salt, plus extra for topping" },
+    { "qty": "150 g", "item": "chopped dark chocolate" }
+  ],
+  "steps": [
+    { "title": "Brown the butter", "text": "Melt the butter in a light-colored pan over medium heat. Keep swirling until it turns amber and smells nutty, about 5 minutes. Whisk in the miso off the heat until smooth, then let cool for 10 minutes." },
+    { "title": "Mix the wet ingredients", "text": "Whisk the brown butter mixture with both sugars until glossy. Add the egg, egg yolk, and vanilla, and whisk until the mixture lightens slightly." },
+    { "title": "Bring in the dry ingredients", "text": "Fold in the flour, baking soda, and salt just until no dry streaks remain. Fold in the chopped chocolate." },
+    { "title": "Chill the dough", "text": "Cover and chill for at least 30 minutes — this keeps the cookies from spreading too thin.", "timerMinutes": 30 },
+    { "title": "Bake", "text": "Scoop into 14 balls on a lined sheet, spaced well apart. Bake at 190°C (375°F) for 11–13 minutes, until the edges are set but the centers still look soft.", "timerMinutes": 12 },
+    { "title": "Finish", "text": "Sprinkle with flaky salt the moment they come out of the oven. Cool on the tray for 5 minutes before moving." }
+  ],
+  "notes": "Dough keeps in the fridge for up to 3 days, or freeze the scooped balls and bake straight from frozen — add a minute or two to the bake time."
+}
