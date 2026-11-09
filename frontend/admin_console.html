@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" type="image/svg+xml" href="favicon.svg">
+		<title>Admin console — Ladle</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/tokens.css">
+		<link rel="stylesheet" href="css/layout.css">
+		<link rel="stylesheet" href="css/components.css">
+		<link rel="stylesheet" href="css/admin.css">
+	</head>
+	<body data-page="admin">
+		<site-header class="site-header"></site-header>
+
+		<main class="container section section--tight">
+			<p id="admin-message" class="lede" role="status">
+				Checking admin access…
+			</p>
+			<section id="admin-console" hidden>
+				<div class="section__head">
+					<div>
+						<p class="hero__eyebrow">Ladle</p>
+					</div>
+				</div>
+				<div class="admin-stats" aria-label="Database overview">
+					<article class="admin-stat">
+						<p class="eyebrow-plain">User accounts</p>
+						<p id="user-count" class="h2">—</p>
+					</article>
+					<article class="admin-stat">
+						<p class="eyebrow-plain">Database size</p>
+						<p id="database-size" class="h2">—</p>
+					</article>
+				</div>
+				<h2 class="h2">User accounts</h2>
+				<div class="admin-table-wrap">
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th scope="col">Name</th>
+								<th scope="col">Username</th>
+								<th scope="col">Email</th>
+								<th scope="col">Role</th>
+								<th scope="col">Joined</th>
+							</tr>
+						</thead>
+						<tbody id="admin-users"></tbody>
+					</table>
+				</div>
+			</section>
+		</main>
+
+		<site-footer class="site-footer"></site-footer>
+
+		<script src="js/config.js"></script>
+		<script src="js/api.js"></script>
+		<script src="js/auth.js"></script>
+		<script src="components/site-header.js"></script>
+		<script src="components/site-footer.js"></script>
+		<script src="js/admin.js"></script>
+	</body>
+</html>
