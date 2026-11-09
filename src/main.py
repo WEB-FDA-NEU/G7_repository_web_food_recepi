@@ -32,7 +32,6 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(recipes.router)
 app.include_router(recipes.me_router)
-# TODO: thêm router của các thành viên khác ở đây (vd. bình luận, đánh giá sao)
 
 
 @app.get("/api/health", tags=["ops"])
@@ -48,6 +47,5 @@ UPLOADS.mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOADS), name="uploads")
 
 FRONTEND = Path(__file__).resolve().parent.parent / "frontend"
-print(FRONTEND)
 if FRONTEND.is_dir():
     app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="frontend")

@@ -113,11 +113,6 @@ h3, .h3 {
   font-weight: 600;
 }
 
-.tag--accent {
-  background: var(--color-accent-soft);
-  color: var(--color-accent-dark);
-}
-
 .chip-row {
   display: flex;
   flex-wrap: wrap;
@@ -182,11 +177,6 @@ h3, .h3 {
 .recipe-card__rating {
   color: var(--color-mustard);
   font-size: var(--text-xs);
-}
-
-/* ---- Rating stars (text-based, no external assets) ---- */
-.stars {
-  letter-spacing: 1px;
 }
 
 /* ---- Ingredient receipt list ---- */
@@ -304,17 +294,6 @@ h3, .h3 {
   font-size: var(--text-xs);
   color: var(--color-ink-faint);
 }
-
-.field__error {
-  font-size: var(--text-xs);
-  color: var(--color-error);
-  display: none;
-}
-
-.field--invalid input {
-  border-color: var(--color-error);
-}
-.field--invalid .field__error { display: block; }
 
 .form-foot {
   font-size: var(--text-sm);

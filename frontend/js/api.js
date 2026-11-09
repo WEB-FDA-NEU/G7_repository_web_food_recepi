@@ -94,5 +94,5 @@ const Api = (() => {
     return { name, email };
   }
 
-  return { getRecipes, getRecipeById, login, register, ApiError };
+  return { getRecipes, getRecipeById, login, register };
 })();

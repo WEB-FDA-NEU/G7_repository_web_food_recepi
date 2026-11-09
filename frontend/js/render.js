@@ -131,12 +131,10 @@ const Render = (() => {
   }
 
   return {
-    recipeCard,
     recipeCardList,
     cardSkeletonGrid,
     categoryChips,
     recipeDetail,
-    stars,
     errorAlert
   };
 })();
