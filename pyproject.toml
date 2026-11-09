@@ -4,10 +4,11 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "mq", email = "minhquang2006m@gmail.com" }]
-requires-python = ">=3.13"
+requires-python = ">=3.15"
 dependencies = [
     "bcrypt>=5.0.0",
     "fastapi>=0.141.1",
+    "marimo[lsp,sandbox,sql]>=0.25.2",
     "pydantic[email]>=2.13.5",
     "python-jose[cryptography]>=3.5.0",
     "sqlalchemy>=2.1.1",
