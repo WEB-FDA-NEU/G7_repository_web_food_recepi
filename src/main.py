@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from .routers import auth, recipes
+from .routers import admin, auth, recipes
 
 app = FastAPI(
     title="Ladle API",
@@ -29,6 +29,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(recipes.router)
 app.include_router(recipes.me_router)
+app.include_router(admin.router)
 
 
 @app.get("/api/health", tags=["ops"])

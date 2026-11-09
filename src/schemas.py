@@ -110,6 +110,11 @@ class UserOut(BaseModel):
     role: str
 
 
+class AdminUserOut(UserOut):
+    email: EmailStr
+    created_at: datetime
+
+
 class RegisterIn(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)

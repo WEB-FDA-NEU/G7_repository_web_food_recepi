@@ -71,5 +71,22 @@ const Api = (() => {
     return fetchJson(`${API_BASE}/auth/logout`, { method: "POST" });
   }
 
-  return { getRecipes, getRecipeById, login, register, saveRecipe, logout };
+  async function getCurrentUser() {
+    return fetchJson(`${API_BASE}/auth/me`);
+  }
+
+  async function getAdminUsers() {
+    return fetchJson(`${API_BASE}/admin/users`);
+  }
+
+  return {
+    getRecipes,
+    getRecipeById,
+    login,
+    register,
+    saveRecipe,
+    logout,
+    getCurrentUser,
+    getAdminUsers
+  };
 })();
