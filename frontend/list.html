@@ -22,11 +22,30 @@
         <h1 class="h1" style="font-size:var(--text-2xl);">Browse recipes</h1>
         <p class="lede" id="result-count"></p>
       </div>
-      <label class="field" style="margin:0;min-width:260px;">
-        <span class="field__hint">Search</span>
-        <input type="search" id="search-input" placeholder="e.g. miso, noodles, galette">
-      </label>
-    </div>
+        <label class="field" style="margin:0;min-width:260px;">
+        <span class="field__hint">Search recipes and comments</span>
+        <input type="search" id="search-input" placeholder="Dish, ingredient, or comment">
+        </label>
+      </div>
+
+      <details class="advanced-search" style="margin-block:var(--space-5);">
+        <summary>Advanced search</summary>
+        <div class="advanced-search__fields">
+          <label class="field">
+            <span>Minimum rating</span>
+            <select id="rating-filter">
+              <option value="">Any rating</option><option value="1">1 star or higher</option>
+              <option value="2">2 stars or higher</option><option value="3">3 stars or higher</option>
+              <option value="4">4 stars or higher</option><option value="5">5 stars</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Recipe author</span>
+            <input type="search" id="author-filter" placeholder="Name or username">
+          </label>
+          <button class="btn btn--primary" id="advanced-search-btn" type="button">Apply filters</button>
+        </div>
+      </details>
 
     <div class="chip-row" id="category-chips" style="margin-bottom:var(--space-6);"></div>
 

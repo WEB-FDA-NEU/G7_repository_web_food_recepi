@@ -137,10 +137,12 @@ const Api = (() => {
     };
   }
 
-  async function getRecipes({ category, query } = {}) {
+  async function getRecipes({ category, query, minRating, author } = {}) {
     const params = new URLSearchParams({ page_size: "50" });
     if (category && category !== "all") params.set("category", category);
     if (query) params.set("q", query);
+    if (minRating) params.set("min_rating", minRating);
+    if (author) params.set("author", author);
     const page = await fetchJson(`${API_BASE}/recipes?${params}`);
     return page.items.map(normalizeRecipe);
   }

@@ -58,12 +58,17 @@
     const grid = document.querySelector("#recipe-grid");
     const chipsEl = document.querySelector("#category-chips");
     const searchInput = document.querySelector("#search-input");
+    const ratingFilter = document.querySelector("#rating-filter");
+    const authorFilter = document.querySelector("#author-filter");
+    const advancedSearchButton = document.querySelector("#advanced-search-btn");
     const resultCount = document.querySelector("#result-count");
     const categories = window.APP_CONFIG.CATEGORIES;
 
     const params = new URLSearchParams(window.location.search);
     let activeCategory = params.get("category") || "all";
     let query = params.get("q") || "";
+    let minRating = "";
+    let author = "";
     if (searchInput) searchInput.value = query;
 
     chipsEl.innerHTML = Render.categoryChips(categories, activeCategory);
@@ -71,7 +76,7 @@
     async function load() {
       grid.innerHTML = Render.cardSkeletonGrid(6);
       try {
-        const recipes = await Api.getRecipes({ category: activeCategory, query });
+        const recipes = await Api.getRecipes({ category: activeCategory, query, minRating, author });
         grid.innerHTML = Render.recipeCardList(recipes);
         if (resultCount) {
           resultCount.textContent = `${recipes.length} recipe${recipes.length === 1 ? "" : "s"}`;
@@ -96,6 +101,17 @@
         query = e.target.value.trim();
         load();
       }, 250);
+    });
+
+    advancedSearchButton?.addEventListener("click", () => {
+      minRating = ratingFilter.value;
+      author = authorFilter.value.trim();
+      load();
+    });
+
+    ratingFilter?.addEventListener("change", () => {
+      minRating = ratingFilter.value;
+      load();
     });
 
     load();

@@ -129,6 +129,9 @@ def _(connection, create_table, mo):
             CREATE INDEX IF NOT EXISTS idx_recipes_category ON recipes(category);
             CREATE INDEX IF NOT EXISTS idx_recipes_status ON recipes(status);
             CREATE INDEX IF NOT EXISTS idx_recipes_created_at ON recipes(created_at);
+            CREATE INDEX IF NOT EXISTS idx_recipes_owner_id ON recipes(owner_id);
+            CREATE INDEX IF NOT EXISTS idx_ingredients_recipe_id_item
+                ON ingredients(recipe_id, item);
             CREATE INDEX IF NOT EXISTS idx_login_sessions_user_id
                 ON login_sessions(user_id);
             CREATE INDEX IF NOT EXISTS idx_login_sessions_expires_at

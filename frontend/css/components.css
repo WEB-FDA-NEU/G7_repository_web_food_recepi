@@ -305,6 +305,23 @@ h3, .h3 {
   color: var(--color-ink-faint);
 }
 
+.advanced-search > summary {
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+
+.advanced-search__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  align-items: end;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: var(--border-hairline);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
 .form-foot {
   font-size: var(--text-sm);
   color: var(--color-ink-soft);

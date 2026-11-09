@@ -35,6 +35,8 @@ def _with_relations(stmt):
 def list_recipes(
     category: str | None = None,
     q: str | None = Query(default=None, description="Tìm theo tên món hoặc theo tag"),
+    min_rating: float | None = Query(default=None, ge=0, le=5),
+    author: str | None = Query(default=None, min_length=1, max_length=80),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=12, ge=1, le=50),
     db: Session = Depends(get_db),
@@ -47,9 +49,27 @@ def list_recipes(
 
     if category and category != "all":
         stmt = stmt.where(Recipe.category == category)
-    if q:
-        like = f"%{q}%"
-        stmt = stmt.where(or_(Recipe.title.ilike(like), Recipe.tags.ilike(like)))
+    if q and q.strip():
+        like = f"%{q.strip()}%"
+        stmt = stmt.where(
+            or_(
+                Recipe.title.ilike(like),
+                Recipe.summary.ilike(like),
+                Recipe.tags.ilike(like),
+                Recipe.ingredients.any(Ingredient.item.ilike(like)),
+                Recipe.reviews.any(RecipeReview.comment.ilike(like)),
+            )
+        )
+
+    if min_rating is not None:
+        stmt = stmt.where(Recipe.rating >= min_rating)
+    if author and author.strip():
+        author_like = f"%{author.strip()}%"
+        stmt = stmt.where(
+            Recipe.owner.has(
+                or_(User.display_name.ilike(author_like), User.username.ilike(author_like))
+            )
+        )
 
     total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
 
