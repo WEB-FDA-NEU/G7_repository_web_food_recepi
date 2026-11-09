@@ -3,6 +3,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from .routers import admin, auth, recipes
@@ -37,6 +38,14 @@ def health():
     return {"status": "ok"}
 
 
+FRONTEND = Path(__file__).resolve().parent.parent / "frontend"
+
+
+@app.get("/admin_console", include_in_schema=False)
+def admin_console():
+    return FileResponse(FRONTEND / "admin_console.html")
+
+
 # ---- Serve frontend (Mốc 4) --------------------------------------------
 # Đặt CUỐI CÙNG, sau tất cả router API. Nếu mount ở trên thì "/" nuốt hết
 # và mọi request /api/... sẽ ra 404.
@@ -44,6 +53,5 @@ UPLOADS = Path(__file__).resolve().parent / "uploads"
 UPLOADS.mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOADS), name="uploads")
 
-FRONTEND = Path(__file__).resolve().parent.parent / "frontend"
 if FRONTEND.is_dir():
     app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="frontend")

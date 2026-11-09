@@ -30,6 +30,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     # unique=True là thứ THẬT SỰ chặn email trùng khi 2 request đến cùng lúc.
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    username: Mapped[str] = mapped_column(String(30), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
     display_name: Mapped[str] = mapped_column(String(80))
     phone: Mapped[str] = mapped_column(String(20), default="")

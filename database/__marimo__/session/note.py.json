@@ -21,13 +21,27 @@
     {
       "id": "MJUe",
       "code_hash": "4043b49d15e02f8ada975574ae4e7f01",
-      "outputs": [],
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
       "console": []
     },
     {
       "id": "vblA",
       "code_hash": "61fcb6de7b8a0288e273a8cc236cf096",
-      "outputs": [],
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -51,7 +65,7 @@
     },
     {
       "id": "PKri",
-      "code_hash": "bedcb0513212e84a173b284faa9c7c41",
+      "code_hash": "f91944713804dde8e88bd63b3d2ea879",
       "outputs": [],
       "console": []
     },
@@ -69,6 +83,31 @@
     },
     {
       "id": "BYtC",
+      "code_hash": "773ed0ef22a8a798e037d1a21694bdfc",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"danger-zone\">danger zone</h2>\n<span class=\"paragraph\">Drop all app tables and their data.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "c5fdb3632f8abfe4113d979f824ea4ae",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "33ed6aa8ba13cb8f2055f243c95021fc",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "emfo",
       "code_hash": "76bec4e122a9133fab307f90eecb941b",
       "outputs": [
         {
@@ -81,21 +120,48 @@
       "console": []
     },
     {
-      "id": "RGSE",
+      "id": "Hstk",
       "code_hash": "11f3e9ae401bb3fc542c2412d8ad84e8",
       "outputs": [],
       "console": []
     },
     {
-      "id": "Kclp",
+      "id": "nWHF",
       "code_hash": "c6752d0c9bd420017947ffa946313bc2",
-      "outputs": [],
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='nWHF-0' random-id='8d685729-52a2-4894-94ef-3da50af3d55e'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;id&#92;&quot;:1,&#92;&quot;email&#92;&quot;:&#92;&quot;admin@example.com&#92;&quot;,&#92;&quot;password_hash&#92;&quot;:&#92;&quot;&#36;2b&#36;12&#36;x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.&#92;&quot;,&#92;&quot;display_name&#92;&quot;:&#92;&quot;admin&#92;&quot;,&#92;&quot;phone&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;role&#92;&quot;:&#92;&quot;admin&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:17:11&#92;&quot;,&#92;&quot;username&#92;&quot;:&#92;&quot;admin&#92;&quot;},{&#92;&quot;id&#92;&quot;:2,&#92;&quot;email&#92;&quot;:&#92;&quot;priya@example.com&#92;&quot;,&#92;&quot;password_hash&#92;&quot;:&#92;&quot;&#36;2b&#36;12&#36;x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.&#92;&quot;,&#92;&quot;display_name&#92;&quot;:&#92;&quot;Priya Nair&#92;&quot;,&#92;&quot;phone&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;role&#92;&quot;:&#92;&quot;user&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:17:11&#92;&quot;,&#92;&quot;username&#92;&quot;:&#92;&quot;priya&#92;&quot;},{&#92;&quot;id&#92;&quot;:3,&#92;&quot;email&#92;&quot;:&#92;&quot;dan@example.com&#92;&quot;,&#92;&quot;password_hash&#92;&quot;:&#92;&quot;&#36;2b&#36;12&#36;x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.&#92;&quot;,&#92;&quot;display_name&#92;&quot;:&#92;&quot;Dan Okafor&#92;&quot;,&#92;&quot;phone&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;role&#92;&quot;:&#92;&quot;user&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:17:11&#92;&quot;,&#92;&quot;username&#92;&quot;:&#92;&quot;dan&#92;&quot;},{&#92;&quot;id&#92;&quot;:4,&#92;&quot;email&#92;&quot;:&#92;&quot;marisol@example.com&#92;&quot;,&#92;&quot;password_hash&#92;&quot;:&#92;&quot;&#36;2b&#36;12&#36;x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.&#92;&quot;,&#92;&quot;display_name&#92;&quot;:&#92;&quot;Marisol Vega&#92;&quot;,&#92;&quot;phone&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;role&#92;&quot;:&#92;&quot;user&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:17:11&#92;&quot;,&#92;&quot;username&#92;&quot;:&#92;&quot;marisol&#92;&quot;},{&#92;&quot;id&#92;&quot;:5,&#92;&quot;email&#92;&quot;:&#92;&quot;wen@example.com&#92;&quot;,&#92;&quot;password_hash&#92;&quot;:&#92;&quot;&#36;2b&#36;12&#36;x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.&#92;&quot;,&#92;&quot;display_name&#92;&quot;:&#92;&quot;Wen Zhao&#92;&quot;,&#92;&quot;phone&#92;&quot;:&#92;&quot;&#92;&quot;,&#92;&quot;role&#92;&quot;:&#92;&quot;user&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:17:11&#92;&quot;,&#92;&quot;username&#92;&quot;:&#92;&quot;wen&#92;&quot;}]&quot;' data-total-rows='5' data-total-columns='8' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;id&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;email&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;password_hash&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;display_name&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;phone&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;role&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;created_at&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;username&quot;,[&quot;string&quot;,&quot;str&quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
       "console": []
     },
     {
-      "id": "emfo",
-      "code_hash": "6e2101b9422d4366a0132495484b40d2",
-      "outputs": [],
+      "id": "iLit",
+      "code_hash": "bf872f9bedb0f7be97f0aaa649df01ed",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='QbPP-0' random-id='c6d740b8-df98-f0b3-82d3-ee990615d526'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;id&#92;&quot;:1,&#92;&quot;user_id&#92;&quot;:1,&#92;&quot;cookie_token_hash&#92;&quot;:&#92;&quot;5d7f1acec7ef2889a11c8a8fa6f2e7b8cc93d0191bc1dd9f0da0af4849725578&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:18:12.666930&#92;&quot;,&#92;&quot;expires_at&#92;&quot;:&#92;&quot;2026-11-09 11:18:12.665956&#92;&quot;,&#92;&quot;revoked_at&#92;&quot;:null},{&#92;&quot;id&#92;&quot;:2,&#92;&quot;user_id&#92;&quot;:2,&#92;&quot;cookie_token_hash&#92;&quot;:&#92;&quot;fece942d92dd6b582f772a458f1e83cc4db56718362cc759e4615dcac2d617d1&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:20:20.567581&#92;&quot;,&#92;&quot;expires_at&#92;&quot;:&#92;&quot;2026-11-09 11:20:20.566585&#92;&quot;,&#92;&quot;revoked_at&#92;&quot;:null},{&#92;&quot;id&#92;&quot;:3,&#92;&quot;user_id&#92;&quot;:2,&#92;&quot;cookie_token_hash&#92;&quot;:&#92;&quot;5b7057dd6f6933e25de27dc29cd64848843bde22888330c5c42cd5ba4521c57c&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:23:32.909059&#92;&quot;,&#92;&quot;expires_at&#92;&quot;:&#92;&quot;2026-11-09 11:23:32.908133&#92;&quot;,&#92;&quot;revoked_at&#92;&quot;:null},{&#92;&quot;id&#92;&quot;:4,&#92;&quot;user_id&#92;&quot;:2,&#92;&quot;cookie_token_hash&#92;&quot;:&#92;&quot;01316385175ea682e6010545d05d268a8afd9ce8ddb904d7b2a69413ffa22d0f&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:25:47.997853&#92;&quot;,&#92;&quot;expires_at&#92;&quot;:&#92;&quot;2026-11-09 11:25:47.996946&#92;&quot;,&#92;&quot;revoked_at&#92;&quot;:null},{&#92;&quot;id&#92;&quot;:5,&#92;&quot;user_id&#92;&quot;:1,&#92;&quot;cookie_token_hash&#92;&quot;:&#92;&quot;51fb91c01dad1175ddec13f0b384a838a5e7a90e0c36ad227d0d661b09c413a0&#92;&quot;,&#92;&quot;created_at&#92;&quot;:&#92;&quot;2026-11-09 10:26:02.573431&#92;&quot;,&#92;&quot;expires_at&#92;&quot;:&#92;&quot;2026-11-09 11:26:02.573021&#92;&quot;,&#92;&quot;revoked_at&#92;&quot;:null}]&quot;' data-total-rows='5' data-total-columns='6' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;id&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;user_id&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;cookie_token_hash&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;created_at&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;expires_at&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;revoked_at&quot;,[&quot;unknown&quot;,&quot;null&quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "08af42f6e52c1ec0cfc2668ae923ebbc",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='iLit-0' random-id='24450d3a-aca6-f440-d9c6-0a49487f74db'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;type&#92;&quot;:&#92;&quot;table&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;sqlite_sequence&#92;&quot;,&#92;&quot;tbl_name&#92;&quot;:&#92;&quot;sqlite_sequence&#92;&quot;,&#92;&quot;rootpage&#92;&quot;:4,&#92;&quot;sql&#92;&quot;:&#92;&quot;CREATE TABLE sqlite_sequence(name,seq)&#92;&quot;},{&#92;&quot;type&#92;&quot;:&#92;&quot;table&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;users&#92;&quot;,&#92;&quot;tbl_name&#92;&quot;:&#92;&quot;users&#92;&quot;,&#92;&quot;rootpage&#92;&quot;:2,&#92;&quot;sql&#92;&quot;:&#92;&quot;CREATE TABLE users (&#92;&#92;n            id INTEGER PRIMARY KEY AUTOINCREMENT,&#92;&#92;n            email TEXT NOT NULL COLLATE NOCASE UNIQUE,&#92;&#92;n            password_hash TEXT NOT NULL,&#92;&#92;n            display_name TEXT NOT NULL,&#92;&#92;n            phone TEXT NOT NULL DEFAULT &#x27;&#x27;,&#92;&#92;n            role TEXT NOT NULL DEFAULT &#x27;user&#x27;&#92;&#92;n                CHECK (role IN (&#x27;user&#x27;, &#x27;admin&#x27;)),&#92;&#92;n            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP&#92;&#92;n        , username TEXT COLLATE NOCASE)&#92;&quot;},{&#92;&quot;type&#92;&quot;:&#92;&quot;table&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;login_sessions&#92;&quot;,&#92;&quot;tbl_name&#92;&quot;:&#92;&quot;login_sessions&#92;&quot;,&#92;&quot;rootpage&#92;&quot;:5,&#92;&quot;sql&#92;&quot;:&#92;&quot;CREATE TABLE login_sessions (&#92;&#92;n            id INTEGER PRIMARY KEY AUTOINCREMENT,&#92;&#92;n            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,&#92;&#92;n            cookie_token_hash TEXT NOT NULL UNIQUE,&#92;&#92;n            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,&#92;&#92;n            expires_at TEXT NOT NULL,&#92;&#92;n            revoked_at TEXT&#92;&#92;n        )&#92;&quot;},{&#92;&quot;type&#92;&quot;:&#92;&quot;table&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;recipes&#92;&quot;,&#92;&quot;tbl_name&#92;&quot;:&#92;&quot;recipes&#92;&quot;,&#92;&quot;rootpage&#92;&quot;:7,&#92;&quot;sql&#92;&quot;:&#92;&quot;CREATE TABLE recipes (&#92;&#92;n            id INTEGER PRIMARY KEY AUTOINCREMENT,&#92;&#92;n            title VARCHAR(160) NOT NULL,&#92;&#92;n            summary TEXT NOT NULL DEFAULT &#x27;&#x27;,&#92;&#92;n            notes TEXT NOT NULL DEFAULT &#x27;&#x27;,&#92;&#92;n            category VARCHAR(20) NOT NULL,&#92;&#92;n            minutes INTEGER NOT NULL DEFAULT 0,&#92;&#92;n            servings INTEGER NOT NULL DEFAULT 4,&#92;&#92;n            difficulty VARCHAR(20) NOT NULL DEFAULT &#x27;Easy&#x27;,&#92;&#92;n            tags VARCHAR(200) NOT NULL DEFAULT &#x27;&#x27;,&#92;&#92;n            cover_url VARCHAR(255) NOT NULL DEFAULT &#x27;&#x27;,&#92;&#92;n            rating FLOAT NOT NULL DEFAULT 0,&#92;&#92;n            rating_count INTEGER NOT NULL DEFAULT 0,&#92;&#92;n            status VARCHAR(20) NOT NULL DEFAULT &#x27;published&#x27;,&#92;&#92;n            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,&#92;&#92;n            owner_id INTEGER NOT NULL REFERENCES users(id)&#92;&#92;n        )&#92;&quot;},{&#92;&quot;type&#92;&quot;:&#92;&quot;table&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;ingredients&#92;&quot;,&#92;&quot;tbl_name&#92;&quot;:&#92;&quot;ingredients&#92;&quot;,&#92;&quot;rootpage&#92;&quot;:8,&#92;&quot;sql&#92;&quot;:&#92;&quot;CREATE TABLE ingredients (&#92;&#92;n            id INTEGER PRIMARY KEY AUTOINCREMENT,&#92;&#92;n            recipe_id INTEGER NOT NULL REFERENCES recipes(id),&#92;&#92;n            position INTEGER NOT NULL DEFAULT 0,&#92;&#92;n            qty VARCHAR(40) NOT NULL,&#92;&#92;n            item VARCHAR(160) NOT NULL&#92;&#92;n        )&#92;&quot;},{&#92;&quot;type&#92;&quot;:&#92;&quot;table&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;steps&#92;&quot;,&#92;&quot;tbl_name&#92;&quot;:&#92;&quot;steps&#92;&quot;,&#92;&quot;rootpage&#92;&quot;:9,&#92;&quot;sql&#92;&quot;:&#92;&quot;CREATE TABLE steps (&#92;&#92;n            id INTEGER PRIMARY KEY AUTOINCREMENT,&#92;&#92;n            recipe_id INTEGER NOT NULL REFERENCES recipes(id),&#92;&#92;n            position INTEGER NOT NULL DEFAULT 0,&#92;&#92;n            title VARCHAR(80) NOT NULL,&#92;&#92;n            text TEXT NOT NULL,&#92;&#92;n            timer_minutes INTEGER&#92;&#92;n        )&#92;&quot;},{&#92;&quot;type&#92;&quot;:&#92;&quot;table&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;saved_recipes&#92;&quot;,&#92;&quot;tbl_name&#92;&quot;:&#92;&quot;saved_recipes&#92;&quot;,&#92;&quot;rootpage&#92;&quot;:10,&#92;&quot;sql&#92;&quot;:&#92;&quot;CREATE TABLE saved_recipes (&#92;&#92;n            id INTEGER PRIMARY KEY AUTOINCREMENT,&#92;&#92;n            user_id INTEGER NOT NULL REFERENCES users(id),&#92;&#92;n            recipe_id INTEGER NOT NULL REFERENCES recipes(id),&#92;&#92;n            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,&#92;&#92;n            CONSTRAINT uq_saved_recipe UNIQUE (user_id, recipe_id)&#92;&#92;n        )&#92;&quot;}]&quot;' data-total-rows='7' data-total-columns='5' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;type&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;name&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;tbl_name&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;rootpage&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;sql&quot;,[&quot;string&quot;,&quot;str&quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
       "console": []
     }
   ]

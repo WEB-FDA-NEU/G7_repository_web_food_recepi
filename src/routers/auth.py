@@ -52,10 +52,16 @@ def register(
 ):
     exists = db.scalar(select(User).where(User.email == payload.email))
     if exists:
-        raise HTTPException(status.HTTP_409_CONFLICT, "Email này đã được đăng ký.")
+        raise HTTPException(status.HTTP_409_CONFLICT, "This email is already registered.")
+    username_exists = db.scalar(
+        select(User).where(User.username == payload.username)
+    )
+    if username_exists:
+        raise HTTPException(status.HTTP_409_CONFLICT, "This username is already taken.")
 
     user = User(
         email=payload.email,
+        username=payload.username,
         password_hash=hash_password(payload.password),
         display_name=payload.display_name,
         phone=payload.phone,
@@ -68,12 +74,18 @@ def register(
 
 @router.post("/login", response_model=UserOut)
 def login(payload: LoginIn, response: Response, db: Session = Depends(get_db)):
-    user = db.scalar(select(User).where(User.email == payload.email))
+    user = db.scalar(
+        select(User).where(
+            (User.email == payload.identifier)
+            | (User.username == payload.identifier)
+        )
+    )
     # Cố tình trả lỗi giống nhau cho "sai email" và "sai mật khẩu" để không lộ
     # cho người ngoài biết một email cụ thể có tồn tại trong hệ thống hay không.
     if user is None or not verify_password(payload.password, user.password_hash):
         raise HTTPException(
-            status.HTTP_401_UNAUTHORIZED, "Email hoặc mật khẩu không đúng."
+            status.HTTP_401_UNAUTHORIZED,
+            "Email/username or password is incorrect.",
         )
     return _start_session(user, db, response)
 

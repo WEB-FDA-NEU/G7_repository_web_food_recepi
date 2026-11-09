@@ -22,7 +22,14 @@ const Api = (() => {
     if (!response.ok) {
       let message = `Request failed with ${response.status}`;
       try {
-        message = (await response.json()).detail || message;
+        const detail = (await response.json()).detail;
+        if (typeof detail === "string") {
+          message = detail;
+        } else if (Array.isArray(detail)) {
+          message = detail
+            .map((item) => item.msg || "Invalid value")
+            .join("; ");
+        }
       } catch {}
       throw new ApiError(message, response.status);
     }
@@ -49,17 +56,17 @@ const Api = (() => {
     return normalizeRecipe(await fetchJson(`${API_BASE}/recipes/${id}`));
   }
 
-  async function login(email, password) {
+  async function login(identifier, password) {
     return fetchJson(`${API_BASE}/auth/login`, {
       method: "POST",
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ identifier, password })
     });
   }
 
-  async function register(name, email, password) {
+  async function register(name, username, email, password) {
     return fetchJson(`${API_BASE}/auth/register`, {
       method: "POST",
-      body: JSON.stringify({ display_name: name, email, password })
+      body: JSON.stringify({ display_name: name, username, email, password })
     });
   }
 
@@ -79,6 +86,10 @@ const Api = (() => {
     return fetchJson(`${API_BASE}/admin/users`);
   }
 
+  async function getAdminStats() {
+    return fetchJson(`${API_BASE}/admin/stats`);
+  }
+
   return {
     getRecipes,
     getRecipeById,
@@ -87,6 +98,11 @@ const Api = (() => {
     saveRecipe,
     logout,
     getCurrentUser,
-    getAdminUsers
+    getAdminUsers,
+    getAdminStats
   };
 })();
+
+// Shared with auth.js and the custom elements, which access the API through
+// window.Api.
+window.Api = Api;

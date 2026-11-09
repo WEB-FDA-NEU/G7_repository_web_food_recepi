@@ -52,6 +52,7 @@ def _(connection, create_table, mo):
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT NOT NULL COLLATE NOCASE UNIQUE,
+                username TEXT NOT NULL COLLATE NOCASE UNIQUE,
                 password_hash TEXT NOT NULL,
                 display_name TEXT NOT NULL,
                 phone TEXT NOT NULL DEFAULT '',
@@ -123,6 +124,33 @@ def _(connection, create_table, mo):
                 ON login_sessions(expires_at);
             """
     )
+    user_columns = {
+        row[1] for row in connection.execute("PRAGMA table_info(users)").fetchall()
+    }
+    if "username" not in user_columns:
+        import re
+
+        connection.execute("ALTER TABLE users ADD COLUMN username TEXT COLLATE NOCASE")
+        used_usernames = set()
+        for user_id, email in connection.execute(
+            "SELECT id, email FROM users ORDER BY id"
+        ).fetchall():
+            base = re.sub(r"[^a-zA-Z0-9_]+", "_", email.partition("@")[0]).strip("_")
+            base = (base or "user")[:24]
+            username = base
+            suffix = 1
+            while username.casefold() in used_usernames:
+                tail = str(suffix)
+                username = f"{base[:30 - len(tail)]}{tail}"
+                suffix += 1
+            used_usernames.add(username.casefold())
+            connection.execute(
+                "UPDATE users SET username = ? WHERE id = ?", (username, user_id)
+            )
+    connection.execute(
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username "
+        "ON users(username COLLATE NOCASE)"
+    )
     connection.commit()
     return
 
@@ -139,6 +167,41 @@ def _(Path, connection, mo, seed_database):
     mo.output.append(seed_database)
     seed_path = Path(__file__).resolve().parent / "seed.sql"
     connection.executescript(seed_path.read_text(encoding="utf-8"))
+    connection.commit()
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ##danger zone
+    Drop all app tables and their data.
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    drop_tables = mo.ui.run_button(label="drop all tables")
+    return (drop_tables,)
+
+
+@app.cell(hide_code=True)
+def _(connection, drop_tables, mo):
+    mo.stop(not drop_tables.value, output=drop_tables)
+    mo.output.append(drop_tables)
+    connection.executescript(
+        """
+        PRAGMA foreign_keys = OFF;
+        DROP TABLE IF EXISTS saved_recipes;
+        DROP TABLE IF EXISTS steps;
+        DROP TABLE IF EXISTS ingredients;
+        DROP TABLE IF EXISTS recipes;
+        DROP TABLE IF EXISTS login_sessions;
+        DROP TABLE IF EXISTS users;
+        PRAGMA foreign_keys = ON;
+        """
+    )
     connection.commit()
     return
 
@@ -174,12 +237,23 @@ def _(connection, mo, users):
 
 
 @app.cell
+def _(connection, login_sessions, mo):
+    _df = mo.sql(
+        f"""
+        Select * from login_sessions
+        """,
+        engine=connection
+    )
+    return
+
+
+@app.cell
 def _(connection, mo, sqlite_master):
     _df = mo.sql(
         f"""
         SELECT *
         FROM sqlite_master
-        --WHERE type = 'table'
+        WHERE type = 'table'
         --ORDER BY name;
         """,
         engine=connection

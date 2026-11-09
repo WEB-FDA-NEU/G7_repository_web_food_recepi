@@ -167,11 +167,23 @@
       submitBtn.textContent = isRegister ? "Creating account…" : "Signing in…";
 
       try {
-        const email = form.email.value.trim();
         const password = form.password.value;
-        const user = isRegister
-          ? await Api.register(form.name.value.trim(), email, password)
-          : await Api.login(email, password);
+        let user;
+        if (isRegister) {
+          user = await Api.register(
+            form.name.value.trim(),
+            form.username.value.trim(),
+            form.email.value.trim(),
+            password
+          );
+        } else {
+          await Api.login(form.identifier.value.trim(), password);
+          try {
+            user = await Api.getCurrentUser();
+          } catch {
+            throw new Error("Login succeeded, but the session was not saved. Please open the app from its FastAPI address and try again.");
+          }
+        }
 
         Auth.setUser(user);
         const params = new URLSearchParams(window.location.search);

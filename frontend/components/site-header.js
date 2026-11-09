@@ -24,7 +24,7 @@ class SiteHeader extends HTMLElement {
     const actions = user
       ? `
         <span class="eyebrow-plain">Hi, ${user.name}</span>
-        <button class="btn btn--ghost btn--sm" data-action="sign-out" type="button">Sign out</button>
+        <button class="btn btn--ghost btn--sm" data-action="sign-out" type="button">Log out</button>
       `
       : `
         <a class="btn btn--ghost btn--sm" href="login.html">Sign in</a>
@@ -40,7 +40,7 @@ class SiteHeader extends HTMLElement {
           <div class="site-header__links">
             ${link("index.html", "Home")}
             ${link("list.html", "Browse")}
-            ${user?.role === "admin" ? link("admin.html", "Admin") : ""}
+            ${user?.role === "admin" ? link("admin_console", "Admin Console") : ""}
           </div>
           <div class="site-header__actions">${actions}</div>
         </nav>
