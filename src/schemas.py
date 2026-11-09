@@ -1,8 +1,8 @@
 """
 Hình dạng JSON đi vào và đi ra.
 
-QUY TẮC: field ở đây phải khớp với những gì frontend/js/render.js và
-frontend/mock/*.json mong đợi. Sai một tên trường là frontend vỡ.
+QUY TẮC: field ở đây phải khớp với những gì frontend/js/render.js mong đợi.
+Sai một tên trường là frontend vỡ.
 
 VÌ SAO TÁCH KHỎI models.py: bảng users có cột password_hash, nhưng JSON trả ra
 internet KHÔNG được có nó. Model nằm trong DB, schema đi ra ngoài.
@@ -120,9 +120,3 @@ class RegisterIn(BaseModel):
 class LoginIn(BaseModel):
     email: EmailStr
     password: str
-
-
-class TokenOut(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
-    user: UserOut

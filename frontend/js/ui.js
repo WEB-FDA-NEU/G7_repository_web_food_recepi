@@ -135,13 +135,19 @@
       saveBtn.textContent = "Save recipe";
     }
 
-    saveBtn.addEventListener("click", () => {
+    saveBtn.addEventListener("click", async () => {
       if (!Auth.isSignedIn()) {
         window.location.href = `login.html?next=${encodeURIComponent(`detail.html?id=${recipe.id}`)}`;
         return;
       }
-      saveBtn.textContent = "Saved ✓";
       saveBtn.disabled = true;
+      try {
+        await Api.saveRecipe(recipe.id);
+        saveBtn.textContent = "Saved ✓";
+      } catch (err) {
+        saveBtn.textContent = err.message;
+        saveBtn.disabled = false;
+      }
     });
   }
 

@@ -1,19 +1,11 @@
 /**
  * config.js
- * Central, environment-style settings. In a real backend this is where
- * the API base URL and any keys would live. For this mock build, it just
- * points at the local JSON files that stand in for API responses.
+ * Central settings for the API and UI.
  */
 window.APP_CONFIG = {
-  // Where "API" responses come from. Swap this for a real endpoint later
-  // without touching any other file.
-  MOCK_BASE: "mock/",
-  LIST_FILE: "items.json",
-  ITEM_FILE_PREFIX: "item-",
-
-  // Simulated network latency, so loading states are visible instead of
-  // instant (delete or set to 0 once a real API is wired up).
-  FAKE_LATENCY_MS: 250,
+  API_BASE: window.location.port === "5500"
+    ? `${window.location.protocol}//${window.location.hostname}:8000/api`
+    : "/api",
 
   SESSION_KEY: "ladle_session",
 

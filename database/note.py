@@ -44,7 +44,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(connection, create_table, mo):
-    mo.stop(create_table.value, output=create_table)
+    mo.stop(not create_table.value, output=create_table)
     mo.output.append(create_table)
     connection.executescript(
         """
@@ -69,6 +69,54 @@ def _(connection, create_table, mo):
                 revoked_at TEXT
             );
 
+            CREATE TABLE IF NOT EXISTS recipes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title VARCHAR(160) NOT NULL,
+                summary TEXT NOT NULL DEFAULT '',
+                notes TEXT NOT NULL DEFAULT '',
+                category VARCHAR(20) NOT NULL,
+                minutes INTEGER NOT NULL DEFAULT 0,
+                servings INTEGER NOT NULL DEFAULT 4,
+                difficulty VARCHAR(20) NOT NULL DEFAULT 'Easy',
+                tags VARCHAR(200) NOT NULL DEFAULT '',
+                cover_url VARCHAR(255) NOT NULL DEFAULT '',
+                rating FLOAT NOT NULL DEFAULT 0,
+                rating_count INTEGER NOT NULL DEFAULT 0,
+                status VARCHAR(20) NOT NULL DEFAULT 'published',
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                owner_id INTEGER NOT NULL REFERENCES users(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS ingredients (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                recipe_id INTEGER NOT NULL REFERENCES recipes(id),
+                position INTEGER NOT NULL DEFAULT 0,
+                qty VARCHAR(40) NOT NULL,
+                item VARCHAR(160) NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS steps (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                recipe_id INTEGER NOT NULL REFERENCES recipes(id),
+                position INTEGER NOT NULL DEFAULT 0,
+                title VARCHAR(80) NOT NULL,
+                text TEXT NOT NULL,
+                timer_minutes INTEGER
+            );
+
+            CREATE TABLE IF NOT EXISTS saved_recipes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL REFERENCES users(id),
+                recipe_id INTEGER NOT NULL REFERENCES recipes(id),
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT uq_saved_recipe UNIQUE (user_id, recipe_id)
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+            CREATE INDEX IF NOT EXISTS idx_recipes_title ON recipes(title);
+            CREATE INDEX IF NOT EXISTS idx_recipes_category ON recipes(category);
+            CREATE INDEX IF NOT EXISTS idx_recipes_status ON recipes(status);
+            CREATE INDEX IF NOT EXISTS idx_recipes_created_at ON recipes(created_at);
             CREATE INDEX IF NOT EXISTS idx_login_sessions_user_id
                 ON login_sessions(user_id);
             CREATE INDEX IF NOT EXISTS idx_login_sessions_expires_at
@@ -87,7 +135,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(Path, connection, mo, seed_database):
-    mo.stop(seed_database.value, output=seed_database)
+    mo.stop(not seed_database.value, output=seed_database)
     mo.output.append(seed_database)
     seed_path = Path(__file__).resolve().parent / "seed.sql"
     connection.executescript(seed_path.read_text(encoding="utf-8"))
@@ -109,7 +157,7 @@ def _(connection, mo):
         f"""
         PRAGMA table_info(users);
         """,
-        engine=connection,
+        engine=connection
     )
     return
 
@@ -120,7 +168,7 @@ def _(connection, mo, users):
         f"""
         SELECT * from users
         """,
-        engine=connection,
+        engine=connection
     )
     return
 
@@ -134,7 +182,7 @@ def _(connection, mo, sqlite_master):
         --WHERE type = 'table'
         --ORDER BY name;
         """,
-        engine=connection,
+        engine=connection
     )
     return
 

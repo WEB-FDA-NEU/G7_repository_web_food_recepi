@@ -1,8 +1,7 @@
 /**
  * auth.js
- * Session state for the mock app. There's no real server session, so a
- * signed-in user is just a small object in localStorage — enough to gate
- * a few UI states (header greeting, "save recipe" button) realistically.
+ * Keeps the public user details used by the header. The HttpOnly session
+ * cookie is managed by the backend and is never exposed to JavaScript.
  */
 const Auth = (() => {
   const { SESSION_KEY } = window.APP_CONFIG;
@@ -10,18 +9,30 @@ const Auth = (() => {
   function getUser() {
     try {
       const raw = localStorage.getItem(SESSION_KEY);
-      return raw ? JSON.parse(raw) : null;
+      const session = raw ? JSON.parse(raw) : null;
+      return session?.user || session || null;
     } catch {
       return null;
     }
   }
 
   function setUser(user) {
+    user = { ...user, name: user.display_name };
     localStorage.setItem(SESSION_KEY, JSON.stringify(user));
     window.dispatchEvent(new CustomEvent("auth:change", { detail: user }));
   }
 
-  function signOut() {
+  async function signOut() {
+    try {
+      await Api.logout();
+    } catch {
+      // Clear the local display state even if the server is unavailable.
+    } finally {
+      clearUser();
+    }
+  }
+
+  function clearUser() {
     localStorage.removeItem(SESSION_KEY);
     window.dispatchEvent(new CustomEvent("auth:change", { detail: null }));
   }

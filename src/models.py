@@ -42,6 +42,24 @@ class User(Base):
     saved: Mapped[list["SavedRecipe"]] = relationship(back_populates="user")
 
 
+class LoginSession(Base):
+    __tablename__ = "login_sessions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE")
+    )
+    cookie_token_hash: Mapped[str] = mapped_column(
+        String(64), unique=True, index=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow
+    )
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    revoked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+
 class Recipe(Base):
     __tablename__ = "recipes"
     id: Mapped[int] = mapped_column(primary_key=True)

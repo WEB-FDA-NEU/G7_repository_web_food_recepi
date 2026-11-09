@@ -59,8 +59,9 @@ class SiteHeader extends HTMLElement {
         this.closest(".site-header")?.classList.toggle("site-header--open");
       }
       if (action === "sign-out") {
-        window.Auth.signOut();
-        window.location.href = "index.html";
+        window.Auth.signOut().finally(() => {
+          window.location.href = "index.html";
+        });
       }
     });
   }

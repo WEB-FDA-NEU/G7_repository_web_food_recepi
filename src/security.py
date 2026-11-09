@@ -1,18 +1,13 @@
-"""Băm mật khẩu và cấp JWT.
+"""Password hashing and opaque login-session token helpers.
 
 Chú ý về bcrypt: thuật toán chỉ nhận tối đa 72 byte. Mật khẩu tiếng Việt có dấu
 tốn 2-3 byte mỗi ký tự, nên phải cắt trước khi băm, nếu không sẽ ném ValueError.
 (Không dùng passlib vì passlib 1.7.4 xung đột với bcrypt >= 4.1.)
 """
-import os
-from datetime import datetime, timedelta, timezone
+import hashlib
+import secrets
 
 import bcrypt
-from jose import jwt, JWTError
-
-SECRET = os.getenv("JWT_SECRET", "dev-secret-doi-truoc-khi-deploy")
-ALGO = "HS256"
-EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", "60"))
 
 BCRYPT_MAX_BYTES = 72
 
@@ -32,16 +27,9 @@ def verify_password(password: str, hashed: str) -> bool:
         return False
 
 
-def create_token(user_id: int) -> str:
-    payload = {
-        "sub": str(user_id),
-        "exp": datetime.now(timezone.utc) + timedelta(minutes=EXPIRE_MINUTES),
-    }
-    return jwt.encode(payload, SECRET, algorithm=ALGO)
+def create_session_token() -> str:
+    return secrets.token_urlsafe(32)
 
 
-def decode_token(token: str) -> int | None:
-    try:
-        return int(jwt.decode(token, SECRET, algorithms=[ALGO])["sub"])
-    except (JWTError, KeyError, ValueError):
-        return None
+def hash_session_token(token: str) -> str:
+    return hashlib.sha256(token.encode("utf-8")).hexdigest()
