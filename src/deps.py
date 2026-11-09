@@ -16,7 +16,7 @@ def get_current_user(
     """Authenticate a request using its HttpOnly login-session cookie."""
     token = request.cookies.get("login_session")
     if token is None:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "You must sign in.")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Please sign in to continue.")
     login_session = db.scalar(
         select(LoginSession).where(
             LoginSession.cookie_token_hash == hash_session_token(token),
@@ -26,11 +26,11 @@ def get_current_user(
     )
     user = db.get(User, login_session.user_id) if login_session else None
     if user is None:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Your session has expired.")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Please sign in again to continue.")
     return user
 
 
 def get_admin(user: User = Depends(get_current_user)) -> User:
     if user.role != "admin":
-        raise HTTPException(status.HTTP_403_FORBIDDEN, "Admin access is required.")
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "You don't have permission to open this page.")
     return user

@@ -40,6 +40,8 @@ class SiteHeader extends HTMLElement {
           <div class="site-header__links">
             ${link("index.html", "Home")}
             ${link("list.html", "Browse")}
+            ${user ? link("userhome", "My Home") : ""}
+            ${user ? link("create_recipe.html", "Share a recipe") : ""}
             ${user?.role === "admin" ? link("admin_console", "Admin Console") : ""}
           </div>
           <div class="site-header__actions">${actions}</div>

@@ -41,6 +41,7 @@ class User(Base):
 
     recipes: Mapped[list["Recipe"]] = relationship(back_populates="owner")
     saved: Mapped[list["SavedRecipe"]] = relationship(back_populates="user")
+    reviews: Mapped[list["RecipeReview"]] = relationship(back_populates="user")
 
 
 class LoginSession(Base):
@@ -103,6 +104,9 @@ class Recipe(Base):
     steps: Mapped[list["Step"]] = relationship(
         back_populates="recipe", order_by="Step.position", cascade="all, delete-orphan"
     )
+    reviews: Mapped[list["RecipeReview"]] = relationship(
+        back_populates="recipe", cascade="all, delete-orphan"
+    )
 
     @property
     def owner_name(self) -> str:
@@ -162,3 +166,31 @@ class SavedRecipe(Base):
     recipe: Mapped["Recipe"] = relationship()
 
     __table_args__ = (UniqueConstraint("user_id", "recipe_id", name="uq_saved_recipe"),)
+
+
+class RecipeReview(Base):
+    """One editable rating and comment from each user for each recipe."""
+
+    __tablename__ = "recipe_reviews"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    recipe_id: Mapped[int] = mapped_column(ForeignKey("recipes.id", ondelete="CASCADE"))
+    rating: Mapped[int] = mapped_column(Integer)
+    comment: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+    user: Mapped["User"] = relationship(back_populates="reviews")
+    recipe: Mapped["Recipe"] = relationship(back_populates="reviews")
+
+    @property
+    def reviewer_name(self) -> str:
+        return self.user.display_name if self.user else ""
+
+    @property
+    def recipe_title(self) -> str:
+        return self.recipe.title if self.recipe else ""
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "recipe_id", name="uq_recipe_review_user"),
+    )

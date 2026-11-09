@@ -101,6 +101,33 @@ class RecipeCreate(BaseModel):
     steps: list[StepIn] = Field(min_length=1)
 
 
+class RecipeReviewCreate(BaseModel):
+    rating: int = Field(ge=1, le=5)
+    comment: str = Field(min_length=1, max_length=2000)
+
+    @field_validator("comment")
+    @classmethod
+    def clean_comment(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Write a comment before posting.")
+        return value
+
+
+class RecipeReviewOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    rating: int
+    comment: str
+    reviewer_name: str
+    created_at: datetime
+
+
+class AdminReviewOut(RecipeReviewOut):
+    recipe_id: int
+    recipe_title: str
+
+
 # ══════════ Tài khoản — dùng chung mọi đề tài, ít khi phải sửa ══════════
 
 class UserOut(BaseModel):
@@ -127,3 +154,14 @@ class RegisterIn(BaseModel):
 class LoginIn(BaseModel):
     identifier: str = Field(min_length=1, max_length=255)
     password: str
+
+
+class AccountUpdate(BaseModel):
+    display_name: str | None = Field(default=None, min_length=2, max_length=80)
+    current_password: str | None = None
+    new_password: str | None = Field(default=None, min_length=8)
+
+    @field_validator("display_name")
+    @classmethod
+    def clean_display_name(cls, value: str | None) -> str | None:
+        return value.strip() if value is not None else None

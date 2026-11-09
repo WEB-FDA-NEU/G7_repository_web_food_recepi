@@ -1,13 +1,13 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from pathlib import Path
 
-from sqlalchemy import func, select
-from sqlalchemy.orm import Session
+from sqlalchemy import delete, func, select
+from sqlalchemy.orm import Session, joinedload, selectinload
 
 from ..database import engine, get_db
 from ..deps import get_admin
-from ..models import User
-from ..schemas import AdminUserOut
+from ..models import Recipe, RecipeReview, SavedRecipe, User
+from ..schemas import AdminReviewOut, AdminUserOut, RecipeCard
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
@@ -39,3 +39,56 @@ def list_users(
     db: Session = Depends(get_db),
 ):
     return db.scalars(select(User).order_by(User.created_at.desc())).all()
+
+
+@router.get("/recipes", response_model=list[RecipeCard])
+def list_recipes(_: User = Depends(get_admin), db: Session = Depends(get_db)):
+    return db.scalars(
+        select(Recipe).options(selectinload(Recipe.owner)).order_by(Recipe.created_at.desc())
+    ).all()
+
+
+@router.delete("/recipes/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_recipe(
+    recipe_id: int,
+    _: User = Depends(get_admin),
+    db: Session = Depends(get_db),
+):
+    recipe = db.get(Recipe, recipe_id)
+    if recipe is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "We couldn't find that recipe.")
+    db.execute(delete(SavedRecipe).where(SavedRecipe.recipe_id == recipe_id))
+    db.delete(recipe)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/comments", response_model=list[AdminReviewOut])
+def list_comments(_: User = Depends(get_admin), db: Session = Depends(get_db)):
+    return db.scalars(
+        select(RecipeReview)
+        .options(joinedload(RecipeReview.user), joinedload(RecipeReview.recipe))
+        .order_by(RecipeReview.created_at.desc())
+    ).all()
+
+
+@router.delete("/comments/{review_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_comment(
+    review_id: int,
+    _: User = Depends(get_admin),
+    db: Session = Depends(get_db),
+):
+    review = db.get(RecipeReview, review_id)
+    if review is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "We couldn't find that comment.")
+    recipe = db.get(Recipe, review.recipe_id)
+    db.delete(review)
+    db.flush()
+    if recipe is not None:
+        average, count = db.query(
+            func.avg(RecipeReview.rating), func.count(RecipeReview.id)
+        ).filter(RecipeReview.recipe_id == recipe.id).one()
+        recipe.rating = float(average or 0)
+        recipe.rating_count = count
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

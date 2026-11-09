@@ -113,6 +113,17 @@ def _(connection, create_table, mo):
                 CONSTRAINT uq_saved_recipe UNIQUE (user_id, recipe_id)
             );
 
+            CREATE TABLE IF NOT EXISTS recipe_reviews (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+                rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+                comment TEXT NOT NULL,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT uq_recipe_review_user UNIQUE (user_id, recipe_id)
+            );
+
             CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
             CREATE INDEX IF NOT EXISTS idx_recipes_title ON recipes(title);
             CREATE INDEX IF NOT EXISTS idx_recipes_category ON recipes(category);
@@ -122,6 +133,8 @@ def _(connection, create_table, mo):
                 ON login_sessions(user_id);
             CREATE INDEX IF NOT EXISTS idx_login_sessions_expires_at
                 ON login_sessions(expires_at);
+            CREATE INDEX IF NOT EXISTS idx_recipe_reviews_recipe_id
+                ON recipe_reviews(recipe_id);
             """
     )
     user_columns = {
@@ -194,6 +207,7 @@ def _(connection, drop_tables, mo):
         """
         PRAGMA foreign_keys = OFF;
         DROP TABLE IF EXISTS saved_recipes;
+        DROP TABLE IF EXISTS recipe_reviews;
         DROP TABLE IF EXISTS steps;
         DROP TABLE IF EXISTS ingredients;
         DROP TABLE IF EXISTS recipes;
@@ -241,6 +255,17 @@ def _(connection, login_sessions, mo):
     _df = mo.sql(
         f"""
         Select * from login_sessions
+        """,
+        engine=connection
+    )
+    return
+
+
+@app.cell
+def _(connection, mo, recipes):
+    _df = mo.sql(
+        f"""
+        Select * from recipes
         """,
         engine=connection
     )

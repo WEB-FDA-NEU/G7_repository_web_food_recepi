@@ -46,6 +46,11 @@ def admin_console():
     return FileResponse(FRONTEND / "admin_console.html")
 
 
+@app.get("/userhome", include_in_schema=False)
+def user_home():
+    return FileResponse(FRONTEND / "userhome.html")
+
+
 # ---- Serve frontend (Mốc 4) --------------------------------------------
 # Đặt CUỐI CÙNG, sau tất cả router API. Nếu mount ở trên thì "/" nuốt hết
 # và mọi request /api/... sẽ ra 404.

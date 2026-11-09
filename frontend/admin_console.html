@@ -21,6 +21,7 @@
 				Checking admin access…
 			</p>
 			<section id="admin-console" hidden>
+				<p id="admin-action-message" class="lede" role="status"></p>
 				<div class="section__head">
 					<div>
 						<p class="hero__eyebrow">Ladle</p>
@@ -49,6 +50,20 @@
 							</tr>
 						</thead>
 						<tbody id="admin-users"></tbody>
+					</table>
+				</div>
+				<h2 class="h2">Recipes</h2>
+				<div class="admin-table-wrap">
+					<table class="admin-table">
+						<thead><tr><th scope="col">Recipe</th><th scope="col">Author</th><th scope="col">Actions</th></tr></thead>
+						<tbody id="admin-recipes"></tbody>
+					</table>
+				</div>
+				<h2 class="h2">Comments and ratings</h2>
+				<div class="admin-table-wrap">
+					<table class="admin-table">
+						<thead><tr><th scope="col">Recipe</th><th scope="col">From</th><th scope="col">Rating</th><th scope="col">Comment</th><th scope="col">Actions</th></tr></thead>
+						<tbody id="admin-comments"></tbody>
 					</table>
 				</div>
 			</section>

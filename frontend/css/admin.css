@@ -15,3 +15,17 @@
 .admin-stat .h2 {
   margin-top: var(--space-2);
 }
+
+.admin-table-wrap + .h2,
+.admin-stats + .h2 {
+  margin-top: var(--space-7);
+}
+
+.admin-delete {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.admin-delete:hover {
+  background: var(--color-accent-soft);
+}

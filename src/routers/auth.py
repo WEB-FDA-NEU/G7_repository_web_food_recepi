@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..deps import get_current_user
 from ..models import LoginSession, User
-from ..schemas import LoginIn, RegisterIn, UserOut
+from ..schemas import AccountUpdate, LoginIn, RegisterIn, UserOut
 from ..security import (
     create_session_token,
     hash_password,
@@ -52,12 +52,12 @@ def register(
 ):
     exists = db.scalar(select(User).where(User.email == payload.email))
     if exists:
-        raise HTTPException(status.HTTP_409_CONFLICT, "This email is already registered.")
+        raise HTTPException(status.HTTP_409_CONFLICT, "This email is already in use.")
     username_exists = db.scalar(
         select(User).where(User.username == payload.username)
     )
     if username_exists:
-        raise HTTPException(status.HTTP_409_CONFLICT, "This username is already taken.")
+        raise HTTPException(status.HTTP_409_CONFLICT, "This username is already in use.")
 
     user = User(
         email=payload.email,
@@ -85,7 +85,7 @@ def login(payload: LoginIn, response: Response, db: Session = Depends(get_db)):
     if user is None or not verify_password(payload.password, user.password_hash):
         raise HTTPException(
             status.HTTP_401_UNAUTHORIZED,
-            "Email/username or password is incorrect.",
+            "The email or password doesn't match.",
         )
     return _start_session(user, db, response)
 
@@ -114,4 +114,27 @@ def logout(
 
 @router.get("/me", response_model=UserOut)
 def me(user: User = Depends(get_current_user)):
+    return user
+
+
+@router.patch("/me", response_model=UserOut)
+def update_me(
+    payload: AccountUpdate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if payload.display_name is None and payload.new_password is None:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Enter a new name or password.")
+    if payload.display_name is not None:
+        if not payload.display_name:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Enter your name.")
+        user.display_name = payload.display_name
+    if payload.new_password is not None:
+        if not payload.current_password:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Enter your current password.")
+        if not verify_password(payload.current_password, user.password_hash):
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "Your current password is incorrect.")
+        user.password_hash = hash_password(payload.new_password)
+    db.commit()
+    db.refresh(user)
     return user

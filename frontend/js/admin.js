@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const userCount = document.querySelector("#user-count");
   const databaseSize = document.querySelector("#database-size");
   const userTable = document.querySelector("#admin-users");
+  const recipeTable = document.querySelector("#admin-recipes");
+  const commentTable = document.querySelector("#admin-comments");
+  const actionMessage = document.querySelector("#admin-action-message");
 
   try {
     const currentUser = await Api.getCurrentUser();
@@ -13,10 +16,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     Auth.setUser(currentUser);
-    const [users, stats] = await Promise.all([
+    message.hidden = true;
+    consolePanel.hidden = false;
+    actionMessage.textContent = "Loading admin data…";
+
+    const [usersResult, statsResult, recipesResult, commentsResult] = await Promise.allSettled([
       Api.getAdminUsers(),
-      Api.getAdminStats()
+      Api.getAdminStats(),
+      Api.getAdminRecipes(),
+      Api.getAdminComments()
     ]);
+    for (const result of [usersResult, statsResult, recipesResult]) {
+      if (result.status === "rejected") throw result.reason;
+    }
+    const users = usersResult.value;
+    const stats = statsResult.value;
+    const recipes = recipesResult.value;
+    const comments = commentsResult.status === "fulfilled" ? commentsResult.value : [];
+    if (commentsResult.status === "rejected") {
+      actionMessage.textContent = "Comments can't load yet. Run the database setup in database/note.py, then refresh this page.";
+    }
     userCount.textContent = stats.user_count.toLocaleString();
     databaseSize.textContent = stats.database_size_bytes == null
       ? "Unavailable"
@@ -39,8 +58,50 @@ document.addEventListener("DOMContentLoaded", async () => {
       userTable.append(row);
     }
 
-    message.hidden = true;
-    consolePanel.hidden = false;
+    for (const recipe of recipes) {
+      const row = document.createElement("tr");
+      row.dataset.recipeId = recipe.id;
+      appendTextCell(row, recipe.title);
+      appendTextCell(row, recipe.author);
+      const actions = document.createElement("td");
+      actions.append(deleteButton("Delete recipe", async (button) => {
+        const confirmed = window.confirm(
+          `Delete “${recipe.title}”? Its comments and saved links will also be removed. This cannot be undone.`
+        );
+        if (!confirmed) return;
+        await runDelete(button, async () => {
+          await Api.deleteAdminRecipe(recipe.id);
+          row.remove();
+          commentTable.querySelectorAll(`[data-recipe-id="${recipe.id}"]`).forEach((commentRow) => commentRow.remove());
+          actionMessage.textContent = "Recipe deleted.";
+        });
+      }));
+      row.append(actions);
+      recipeTable.append(row);
+    }
+
+    for (const comment of comments) {
+      const row = document.createElement("tr");
+      row.dataset.recipeId = comment.recipe_id;
+      appendTextCell(row, comment.recipe_title);
+      appendTextCell(row, comment.reviewer_name);
+      appendTextCell(row, `${comment.rating} / 5`);
+      appendTextCell(row, comment.comment);
+      const actions = document.createElement("td");
+      actions.append(deleteButton("Delete comment", async (button) => {
+        const confirmed = window.confirm("Delete this comment and rating? This cannot be undone.");
+        if (!confirmed) return;
+        await runDelete(button, async () => {
+          await Api.deleteAdminComment(comment.id);
+          row.remove();
+          actionMessage.textContent = "Comment deleted.";
+        });
+      }));
+      row.append(actions);
+      commentTable.append(row);
+    }
+
+    if (commentsResult.status === "fulfilled") actionMessage.textContent = "";
   } catch (error) {
     if (error.status === 401) {
       window.location.replace("login.html?next=admin_console");
@@ -50,9 +111,39 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.location.replace("index.html");
       return;
     }
-    message.textContent = "Could not load the admin console. Please try again.";
+    if (consolePanel.hidden) {
+      message.textContent = "The admin page didn't load. Refresh the page and try again.";
+    } else {
+      actionMessage.textContent = "Some admin data couldn't load. Refresh the page and try again.";
+    }
   }
 });
+
+function appendTextCell(row, value) {
+  const cell = document.createElement("td");
+  cell.textContent = value ?? "";
+  row.append(cell);
+}
+
+function deleteButton(label, onClick) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "btn btn--ghost btn--sm admin-delete";
+  button.textContent = label;
+  button.addEventListener("click", () => onClick(button).catch((error) => {
+    document.querySelector("#admin-action-message").textContent = error.message;
+  }));
+  return button;
+}
+
+async function runDelete(button, action) {
+  button.disabled = true;
+  try {
+    await action();
+  } finally {
+    button.disabled = false;
+  }
+}
 
 function formatBytes(bytes) {
   if (bytes < 1024) return `${bytes} B`;

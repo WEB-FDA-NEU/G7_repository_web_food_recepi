@@ -277,7 +277,8 @@ h3, .h3 {
 }
 
 .field input,
-.field textarea {
+.field textarea,
+.field select {
   background: var(--color-surface);
   border: var(--border-hairline-strong);
   border-radius: var(--radius-sm);
@@ -286,8 +287,17 @@ h3, .h3 {
 }
 
 .field input:focus,
-.field textarea:focus {
+.field textarea:focus,
+.field select:focus {
   border-color: var(--color-accent);
+}
+
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"],
+.field select[aria-invalid="true"] {
+  border: 2px solid var(--color-error);
+  outline: 2px solid color-mix(in srgb, var(--color-error) 20%, transparent);
+  background: var(--color-accent-soft);
 }
 
 .field__hint {
