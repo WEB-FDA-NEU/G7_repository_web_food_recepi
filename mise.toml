@@ -1,6 +1,6 @@
 [settings]
 python.uv_venv_auto = "source"
-
+#  lệnh bắt đầu với mise + "lệnh bên dưới"
 [tasks]
 sync = "uv sync"
 run = "uv run uvicorn src.main:app --reload --port 10000"
