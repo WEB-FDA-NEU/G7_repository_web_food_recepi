@@ -1,4 +1,5 @@
 import os
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -8,10 +9,21 @@ from fastapi.staticfiles import StaticFiles
 
 from .routers import admin, auth, recipes
 
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    # Schema creation is idempotent and centralized in database/note.py.
+    from database.note import initialize_schema
+
+    initialize_schema()
+    yield
+
+
 app = FastAPI(
     title="Ladle API",
     version="1.0.0",
     description="API cho nền tảng chia sẻ công thức nấu ăn Ladle. Tài liệu tự sinh tại /docs.",
+    lifespan=lifespan,
 )
 
 # CORS chỉ cần khi frontend chạy ở cổng khác (lúc phát triển: Live Server 5500).
@@ -54,7 +66,11 @@ def user_home():
 # ---- Serve frontend (Mốc 4) --------------------------------------------
 # Đặt CUỐI CÙNG, sau tất cả router API. Nếu mount ở trên thì "/" nuốt hết
 # và mọi request /api/... sẽ ra 404.
-UPLOADS = Path(__file__).resolve().parent / "uploads"
+UPLOADS = (
+    Path("/tmp/ladle-uploads")
+    if os.getenv("VERCEL")
+    else Path(__file__).resolve().parent / "uploads"
+)
 UPLOADS.mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOADS), name="uploads")
 

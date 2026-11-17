@@ -90,3 +90,23 @@ uv run python -m http.server 5500 --directory frontend
 ```
 
 Mở `http://127.0.0.1:5500`. Frontend sẽ gọi API tại cổng `10000`.
+
+## Deploy on Vercel
+
+The FastAPI app is exposed as `src.main:app` in `pyproject.toml`, and `.python-version`
+pins the Vercel runtime to Python 3.14. Import this repository in Vercel with the
+repository root as the Root Directory; Vercel detects the FastAPI app and installs
+dependencies from `pyproject.toml` / `uv.lock`.
+
+The app requires a persistent PostgreSQL database on Vercel. Add these environment
+variables in the Vercel project settings before the first deployment:
+
+| Variable | Value |
+| --- | --- |
+| `DATABASE_URL` | PostgreSQL connection string from your database provider |
+| `COOKIE_SECURE` | `true` |
+
+On startup, the app creates any missing tables through `database/note.py`. This does
+not migrate existing SQLite records or seed demo accounts; existing data must be
+migrated separately, and users can register after the first deploy. Then deploy the
+project from Vercel. The health endpoint is `/api/health` and API docs are at `/docs`.

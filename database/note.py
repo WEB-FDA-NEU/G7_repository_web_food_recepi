@@ -4,6 +4,18 @@ __generated_with = "0.25.2"
 app = marimo.App()
 
 
+def initialize_schema() -> None:
+    """Create missing application tables for a fresh local or hosted database.
+
+    Keep schema initialization here so the notebook and deployed app share the
+    same database setup entry point. Existing tables are left intact.
+    """
+    from src import models as _models  # noqa: F401 - register model metadata
+    from src.database import Base, engine
+
+    Base.metadata.create_all(bind=engine)
+
+
 def upgrade_review_search_schema() -> None:
     """Add review storage and lookup indexes to an existing SQLite database."""
     from pathlib import Path

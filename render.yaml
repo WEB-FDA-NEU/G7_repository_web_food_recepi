@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: ladle
-    runtime: python
-    buildCommand: pip install -r src/requirements.txt
-    startCommand: uvicorn src.main:app --host 0.0.0.0 --port $PORT
-    healthCheckPath: /api/health
