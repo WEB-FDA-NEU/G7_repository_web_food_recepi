@@ -93,13 +93,16 @@ Mở `http://127.0.0.1:5500`. Frontend sẽ gọi API tại cổng `10000`.
 
 ## Deploy on Vercel
 
-The FastAPI app is exposed as `src.main:app` in `pyproject.toml`, and `.python-version`
-pins the Vercel runtime to Python 3.14. Import this repository in Vercel with the
-repository root as the Root Directory; Vercel detects the FastAPI app and installs
-dependencies from `pyproject.toml` / `uv.lock`.
+The root `vercel.json` configures two Vercel services: static HTML/CSS/JS from
+`frontend/`, and the FastAPI app at `src.main:app`. The frontend is public at `/`;
+API requests under `/api/` are routed to FastAPI. `/admin_console` and `/userhome`
+are rewritten to their matching static HTML files. `/docs`, `/redoc`, and
+`/openapi.json` are routed to FastAPI. The frontend calls the API through same-origin
+`/api` URLs, so no internal service binding is needed.
 
-The app requires a persistent PostgreSQL database on Vercel. Add these environment
-variables in the Vercel project settings before the first deployment:
+The Python runtime is pinned to 3.14 by `.python-version`. The FastAPI service uses
+`pyproject.toml` and `uv.lock` for dependencies. Add these environment variables to
+the Vercel project before deployment:
 
 | Variable | Value |
 | --- | --- |
@@ -108,5 +111,6 @@ variables in the Vercel project settings before the first deployment:
 
 On startup, the app creates any missing tables through `database/note.py`. This does
 not migrate existing SQLite records or seed demo accounts; existing data must be
-migrated separately, and users can register after the first deploy. Then deploy the
-project from Vercel. The health endpoint is `/api/health` and API docs are at `/docs`.
+migrated separately, and users can register after the first deploy. In Vercel, select
+the **Services** framework for the project and deploy from the repository root.
+The health endpoint is `/api/health` and API docs are at `/docs`.
