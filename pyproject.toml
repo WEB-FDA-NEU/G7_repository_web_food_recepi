@@ -34,3 +34,9 @@ g7-repository-web-food-recepi = "main"
 
 [tool.vercel]
 entrypoint = "src.main:app"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.2.0",
+]
