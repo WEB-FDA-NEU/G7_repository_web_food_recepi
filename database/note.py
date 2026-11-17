@@ -52,6 +52,7 @@ def _(connection, create_table, mo):
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT NOT NULL COLLATE NOCASE UNIQUE,
+                username TEXT NOT NULL COLLATE NOCASE UNIQUE,
                 password_hash TEXT NOT NULL,
                 display_name TEXT NOT NULL,
                 phone TEXT NOT NULL DEFAULT '',
@@ -112,6 +113,17 @@ def _(connection, create_table, mo):
                 CONSTRAINT uq_saved_recipe UNIQUE (user_id, recipe_id)
             );
 
+            CREATE TABLE IF NOT EXISTS recipe_reviews (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+                rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+                comment TEXT NOT NULL,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT uq_recipe_review_user UNIQUE (user_id, recipe_id)
+            );
+
             CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
             CREATE INDEX IF NOT EXISTS idx_recipes_title ON recipes(title);
             CREATE INDEX IF NOT EXISTS idx_recipes_category ON recipes(category);
@@ -121,7 +133,36 @@ def _(connection, create_table, mo):
                 ON login_sessions(user_id);
             CREATE INDEX IF NOT EXISTS idx_login_sessions_expires_at
                 ON login_sessions(expires_at);
+            CREATE INDEX IF NOT EXISTS idx_recipe_reviews_recipe_id
+                ON recipe_reviews(recipe_id);
             """
+    )
+    user_columns = {
+        row[1] for row in connection.execute("PRAGMA table_info(users)").fetchall()
+    }
+    if "username" not in user_columns:
+        import re
+
+        connection.execute("ALTER TABLE users ADD COLUMN username TEXT COLLATE NOCASE")
+        used_usernames = set()
+        for user_id, email in connection.execute(
+            "SELECT id, email FROM users ORDER BY id"
+        ).fetchall():
+            base = re.sub(r"[^a-zA-Z0-9_]+", "_", email.partition("@")[0]).strip("_")
+            base = (base or "user")[:24]
+            username = base
+            suffix = 1
+            while username.casefold() in used_usernames:
+                tail = str(suffix)
+                username = f"{base[:30 - len(tail)]}{tail}"
+                suffix += 1
+            used_usernames.add(username.casefold())
+            connection.execute(
+                "UPDATE users SET username = ? WHERE id = ?", (username, user_id)
+            )
+    connection.execute(
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username "
+        "ON users(username COLLATE NOCASE)"
     )
     connection.commit()
     return
@@ -139,6 +180,42 @@ def _(Path, connection, mo, seed_database):
     mo.output.append(seed_database)
     seed_path = Path(__file__).resolve().parent / "seed.sql"
     connection.executescript(seed_path.read_text(encoding="utf-8"))
+    connection.commit()
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ##danger zone
+    Drop all app tables and their data.
+    """)
+    return
+
+
+@app.cell
+def _(mo):
+    drop_tables = mo.ui.run_button(label="drop all tables")
+    return (drop_tables,)
+
+
+@app.cell(hide_code=True)
+def _(connection, drop_tables, mo):
+    mo.stop(not drop_tables.value, output=drop_tables)
+    mo.output.append(drop_tables)
+    connection.executescript(
+        """
+        PRAGMA foreign_keys = OFF;
+        DROP TABLE IF EXISTS saved_recipes;
+        DROP TABLE IF EXISTS recipe_reviews;
+        DROP TABLE IF EXISTS steps;
+        DROP TABLE IF EXISTS ingredients;
+        DROP TABLE IF EXISTS recipes;
+        DROP TABLE IF EXISTS login_sessions;
+        DROP TABLE IF EXISTS users;
+        PRAGMA foreign_keys = ON;
+        """
+    )
     connection.commit()
     return
 
@@ -174,12 +251,34 @@ def _(connection, mo, users):
 
 
 @app.cell
+def _(connection, login_sessions, mo):
+    _df = mo.sql(
+        f"""
+        Select * from login_sessions
+        """,
+        engine=connection
+    )
+    return
+
+
+@app.cell
+def _(connection, mo, recipes):
+    _df = mo.sql(
+        f"""
+        Select * from recipes
+        """,
+        engine=connection
+    )
+    return
+
+
+@app.cell
 def _(connection, mo, sqlite_master):
     _df = mo.sql(
         f"""
         SELECT *
         FROM sqlite_master
-        --WHERE type = 'table'
+        WHERE type = 'table'
         --ORDER BY name;
         """,
         engine=connection

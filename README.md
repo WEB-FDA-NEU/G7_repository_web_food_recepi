@@ -67,14 +67,26 @@ source .venv/bin/activate
 
 ## 4. Chạy dự án
 
-### Xem giao diện (frontend, Milestone 1 — chỉ HTML)
+### Chạy website có API (đăng nhập, admin)
+
+```bash
+uv run uvicorn src.main:app --reload --port 10000
+```
+
+Mở `http://127.0.0.1:10000`. FastAPI phục vụ cả frontend lẫn API trên cùng địa chỉ.
+
+### Chạy frontend và backend riêng
+
+Terminal 1:
+
+```bash
+uv run uvicorn src.main:app --reload --port 10000
+```
+
+Terminal 2:
 
 ```bash
 uv run python -m http.server 5500 --directory frontend
 ```
 
-### Chạy backend (từ các milestone có API)
-
-** macOS / Linux/ Windows**:
-see [mise.tom](mise.toml)
-
+Mở `http://127.0.0.1:5500`. Frontend sẽ gọi API tại cổng `10000`.

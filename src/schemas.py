@@ -101,22 +101,67 @@ class RecipeCreate(BaseModel):
     steps: list[StepIn] = Field(min_length=1)
 
 
+class RecipeReviewCreate(BaseModel):
+    rating: int = Field(ge=1, le=5)
+    comment: str = Field(min_length=1, max_length=2000)
+
+    @field_validator("comment")
+    @classmethod
+    def clean_comment(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Write a comment before posting.")
+        return value
+
+
+class RecipeReviewOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    rating: int
+    comment: str
+    reviewer_name: str
+    created_at: datetime
+
+
+class AdminReviewOut(RecipeReviewOut):
+    recipe_id: int
+    recipe_title: str
+
+
 # ══════════ Tài khoản — dùng chung mọi đề tài, ít khi phải sửa ══════════
 
 class UserOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
     display_name: str
+    username: str
     role: str
+
+
+class AdminUserOut(UserOut):
+    email: EmailStr
+    created_at: datetime
 
 
 class RegisterIn(BaseModel):
     email: EmailStr
+    username: str = Field(min_length=3, max_length=30, pattern=r"^[a-zA-Z0-9_]+$")
     password: str = Field(min_length=8)
     display_name: str = Field(min_length=2, max_length=80)
     phone: str = ""
 
 
 class LoginIn(BaseModel):
-    email: EmailStr
+    identifier: str = Field(min_length=1, max_length=255)
     password: str
+
+
+class AccountUpdate(BaseModel):
+    display_name: str | None = Field(default=None, min_length=2, max_length=80)
+    current_password: str | None = None
+    new_password: str | None = Field(default=None, min_length=8)
+
+    @field_validator("display_name")
+    @classmethod
+    def clean_display_name(cls, value: str | None) -> str | None:
+        return value.strip() if value is not None else None

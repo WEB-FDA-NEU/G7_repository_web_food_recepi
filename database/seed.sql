@@ -1,12 +1,19 @@
--- Demo accounts for local development. Password for each account: password123
+-- Demo accounts for local development. Password for each account: password
 -- The stored value is a bcrypt hash; never store demo passwords in plain text.
 BEGIN;
-INSERT OR IGNORE INTO users (email, password_hash, display_name, role) VALUES
-    ('admin@example.com', '$2b$12$z5IXvHRRNP3lPhZyty/zOO.xtUSc5HId5geSsDxo1kJkYn7.BxTY2', 'Quản trị', 'admin'),
-    ('priya@example.com', '$2b$12$z5IXvHRRNP3lPhZyty/zOO.xtUSc5HId5geSsDxo1kJkYn7.BxTY2', 'Priya Nair', 'user'),
-    ('dan@example.com', '$2b$12$z5IXvHRRNP3lPhZyty/zOO.xtUSc5HId5geSsDxo1kJkYn7.BxTY2', 'Dan Okafor', 'user'),
-    ('marisol@example.com', '$2b$12$z5IXvHRRNP3lPhZyty/zOO.xtUSc5HId5geSsDxo1kJkYn7.BxTY2', 'Marisol Vega', 'user'),
-    ('wen@example.com', '$2b$12$z5IXvHRRNP3lPhZyty/zOO.xtUSc5HId5geSsDxo1kJkYn7.BxTY2', 'Wen Zhao', 'user');
+INSERT OR IGNORE INTO users (email, username, password_hash, display_name, role) VALUES
+    ('admin@example.com', 'admin', '$2b$12$x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.', 'admin', 'admin'),
+    ('priya@example.com', 'priya', '$2b$12$x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.', 'Priya Nair', 'user'),
+    ('dan@example.com', 'dan', '$2b$12$x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.', 'Dan Okafor', 'user'),
+    ('marisol@example.com', 'marisol', '$2b$12$x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.', 'Marisol Vega', 'user'),
+    ('wen@example.com', 'wen', '$2b$12$x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.', 'Wen Zhao', 'user');
+
+UPDATE users
+SET password_hash = '$2b$12$x7H097vVUrsrYPu5T1QaIeqrvzf.adhJ/ieisXkDeKyDlPRdWK3p.'
+WHERE email IN (
+    'admin@example.com', 'priya@example.com', 'dan@example.com',
+    'marisol@example.com', 'wen@example.com'
+);
 
 INSERT OR IGNORE INTO recipes
     (id, title, summary, notes, category, minutes, servings, difficulty, tags,

@@ -3,9 +3,10 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from .routers import auth, recipes
+from .routers import admin, auth, recipes
 
 app = FastAPI(
     title="Ladle API",
@@ -29,11 +30,25 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(recipes.router)
 app.include_router(recipes.me_router)
+app.include_router(admin.router)
 
 
 @app.get("/api/health", tags=["ops"])
 def health():
     return {"status": "ok"}
+
+
+FRONTEND = Path(__file__).resolve().parent.parent / "frontend"
+
+
+@app.get("/admin_console", include_in_schema=False)
+def admin_console():
+    return FileResponse(FRONTEND / "admin_console.html")
+
+
+@app.get("/userhome", include_in_schema=False)
+def user_home():
+    return FileResponse(FRONTEND / "userhome.html")
 
 
 # ---- Serve frontend (Mốc 4) --------------------------------------------
@@ -43,6 +58,5 @@ UPLOADS = Path(__file__).resolve().parent / "uploads"
 UPLOADS.mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOADS), name="uploads")
 
-FRONTEND = Path(__file__).resolve().parent.parent / "frontend"
 if FRONTEND.is_dir():
     app.mount("/", StaticFiles(directory=FRONTEND, html=True), name="frontend")

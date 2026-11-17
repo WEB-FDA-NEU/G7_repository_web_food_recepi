@@ -1,3 +1,5 @@
+from datetime import UTC, datetime
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, or_, select
 from sqlalchemy.exc import IntegrityError
@@ -5,11 +7,18 @@ from sqlalchemy.orm import Session, selectinload
 
 from ..database import get_db
 from ..deps import get_current_user
-from ..models import Ingredient, Recipe, SavedRecipe, Step, User
-from ..schemas import RecipeCard, RecipeCreate, RecipeDetail, RecipePage
+from ..models import Ingredient, Recipe, RecipeReview, SavedRecipe, Step, User
+from ..schemas import (
+    RecipeCard,
+    RecipeCreate,
+    RecipeDetail,
+    RecipePage,
+    RecipeReviewCreate,
+    RecipeReviewOut,
+)
 
 router = APIRouter(prefix="/api/recipes", tags=["recipes"])
-me_router = APIRouter(prefix="/me", tags=["me"])
+me_router = APIRouter(prefix="/api/me", tags=["me"])
 
 
 def _with_relations(stmt):
@@ -59,7 +68,7 @@ def get_recipe(recipe_id: int, db: Session = Depends(get_db)):
     stmt = _with_relations(select(Recipe).where(Recipe.id == recipe_id))
     recipe = db.scalars(stmt).unique().first()
     if recipe is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, "Không tìm thấy công thức này.")
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "We couldn't find that recipe.")
     return recipe
 
 
@@ -97,6 +106,54 @@ def create_recipe(
     return recipe
 
 
+@router.get("/{recipe_id}/reviews", response_model=list[RecipeReviewOut])
+def list_reviews(recipe_id: int, db: Session = Depends(get_db)):
+    if db.get(Recipe, recipe_id) is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "We couldn't find that recipe.")
+    return db.scalars(
+        select(RecipeReview)
+        .where(RecipeReview.recipe_id == recipe_id)
+        .order_by(RecipeReview.created_at.desc())
+    ).all()
+
+
+@router.post("/{recipe_id}/reviews", response_model=RecipeReviewOut)
+def save_review(
+    recipe_id: int,
+    payload: RecipeReviewCreate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    recipe = db.get(Recipe, recipe_id)
+    if recipe is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "We couldn't find that recipe.")
+    review = db.scalar(
+        select(RecipeReview).where(
+            RecipeReview.recipe_id == recipe_id, RecipeReview.user_id == user.id
+        )
+    )
+    if review is None:
+        review = RecipeReview(
+            recipe_id=recipe_id, user_id=user.id,
+            rating=payload.rating, comment=payload.comment.strip()
+        )
+        db.add(review)
+    else:
+        review.rating = payload.rating
+        review.comment = payload.comment.strip()
+        review.updated_at = datetime.now(UTC)
+
+    db.flush()
+    average, count = db.query(func.avg(RecipeReview.rating), func.count(RecipeReview.id)).filter(
+        RecipeReview.recipe_id == recipe_id
+    ).one()
+    recipe.rating = float(average or 0)
+    recipe.rating_count = count
+    db.commit()
+    db.refresh(review)
+    return review
+
+
 @me_router.get("/recipes", response_model=list[RecipeCard])
 def my_recipes(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Công thức của chính người dùng đang đăng nhập — bao gồm cả bản draft,
@@ -130,7 +187,7 @@ def save_recipe(
     idempotent — thay vì báo lỗi trùng, vì với người dùng thì bấm Save hai lần
     và Save một lần nên có kết quả giống nhau."""
     if db.get(Recipe, recipe_id) is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, "Không tìm thấy công thức này.")
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "We couldn't find that recipe.")
 
     try:
         db.add(SavedRecipe(user_id=user.id, recipe_id=recipe_id))
