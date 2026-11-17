@@ -322,6 +322,43 @@ h3, .h3 {
   background: var(--color-surface);
 }
 
+.category-filter__options {
+  display: grid;
+  gap: var(--space-2);
+  max-height: 12rem;
+  overflow-y: auto;
+  margin-block: var(--space-2);
+}
+
+.category-filter__option,
+.category-filter__selected > div {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.category-filter__option > span {
+  flex: 1;
+}
+
+.category-filter__option button,
+.category-filter__chip {
+  border: var(--border-hairline-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-surface);
+  font-size: var(--text-xs);
+}
+
+.category-filter__selected {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.category-filter__selected > div {
+  flex-wrap: wrap;
+}
+
 .form-foot {
   font-size: var(--text-sm);
   color: var(--color-ink-soft);

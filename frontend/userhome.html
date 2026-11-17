@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>My Home — Ladle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="userhome">
+  <site-header class="site-header"></site-header>
+  <main class="container section">
+    <h1 class="h1" style="font-size:var(--text-2xl);margin-bottom:var(--space-6);">My Home</h1>
+    <p id="userhome-message" class="lede" role="status"></p>
+    <section aria-labelledby="profile-title">
+      <h2 class="h2" id="profile-title" style="font-size:var(--text-xl);margin-bottom:var(--space-4);">User Profile</h2>
+      <div class="detail-layout">
+        <div class="auth-shell">
+          <h3 class="h3" style="margin-bottom:var(--space-4);">Your name</h3>
+          <form id="profile-form">
+            <div class="field">
+              <label for="display-name">Name</label>
+              <input id="display-name" name="display_name" required minlength="2" maxlength="80">
+            </div>
+            <p class="lede" role="status"></p>
+            <button class="btn btn--primary" type="submit">Save name</button>
+          </form>
+        </div>
+        <div class="auth-shell">
+          <h3 class="h3" id="password-title" style="margin-bottom:var(--space-4);">Change password</h3>
+          <form id="password-form">
+            <div class="field">
+              <label for="current-password">Current password</label>
+              <input type="password" id="current-password" name="current_password" required autocomplete="current-password">
+            </div>
+            <div class="field">
+              <label for="new-password">New password</label>
+              <input type="password" id="new-password" name="new_password" required minlength="8" autocomplete="new-password">
+              <span class="field__hint">Use at least 8 characters.</span>
+            </div>
+            <div class="field">
+              <label for="confirm-password">Type the new password again</label>
+              <input type="password" id="confirm-password" name="confirm_password" required minlength="8" autocomplete="new-password">
+            </div>
+            <p class="lede" role="status"></p>
+            <button class="btn btn--primary" type="submit">Change password</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section class="section" aria-labelledby="shared-title">
+      <div class="section__head">
+        <h2 class="h2" id="shared-title">Shared Recipes</h2>
+        <a class="btn btn--primary btn--sm" href="create_recipe.html">Share a recipe</a>
+      </div>
+      <div id="shared-recipes"><p class="lede">Loading your recipes…</p></div>
+    </section>
+    <section class="section" aria-labelledby="saved-title">
+      <div class="section__head">
+        <h2 class="h2" id="saved-title">Saved recipes</h2>
+      </div>
+      <div id="saved-recipes"><p class="lede">Loading your saved recipes…</p></div>
+    </section>
+  </main>
+  <site-footer class="site-footer"></site-footer>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/render.js"></script>
+  <script src="components/site-header.js"></script>
+  <script src="components/site-footer.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>

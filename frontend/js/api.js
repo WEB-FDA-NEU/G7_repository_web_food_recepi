@@ -137,12 +137,15 @@ const Api = (() => {
     };
   }
 
-  async function getRecipes({ category, query, minRating, author } = {}) {
+  async function getRecipes({ category, query, advancedQuery, minRating, author, includeCategories, excludeCategories } = {}) {
     const params = new URLSearchParams({ page_size: "50" });
     if (category && category !== "all") params.set("category", category);
     if (query) params.set("q", query);
+    if (advancedQuery) params.set("advanced_q", advancedQuery);
     if (minRating) params.set("min_rating", minRating);
     if (author) params.set("author", author);
+    for (const value of includeCategories || []) params.append("include_categories", value);
+    for (const value of excludeCategories || []) params.append("exclude_categories", value);
     const page = await fetchJson(`${API_BASE}/recipes?${params}`);
     return page.items.map(normalizeRecipe);
   }

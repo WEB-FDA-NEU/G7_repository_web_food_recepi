@@ -60,6 +60,11 @@
     const searchInput = document.querySelector("#search-input");
     const ratingFilter = document.querySelector("#rating-filter");
     const authorFilter = document.querySelector("#author-filter");
+    const contentFilter = document.querySelector("#content-filter");
+    const categorySearch = document.querySelector("#category-search");
+    const categoryOptions = document.querySelector("#category-options");
+    const includedCategoriesEl = document.querySelector("#included-categories");
+    const excludedCategoriesEl = document.querySelector("#excluded-categories");
     const advancedSearchButton = document.querySelector("#advanced-search-btn");
     const resultCount = document.querySelector("#result-count");
     const categories = window.APP_CONFIG.CATEGORIES;
@@ -69,14 +74,85 @@
     let query = params.get("q") || "";
     let minRating = "";
     let author = "";
+    let advancedQuery = "";
+    let includedCategories = [];
+    let excludedCategories = [];
+    let activeIncludedCategories = [];
+    let activeExcludedCategories = [];
     if (searchInput) searchInput.value = query;
 
     chipsEl.innerHTML = Render.categoryChips(categories, activeCategory);
+    renderCategoryChoices();
+
+    function renderCategoryChoices() {
+      const search = categorySearch.value.trim().toLowerCase();
+      const matches = categories.filter((item) => item.label.toLowerCase().includes(search));
+      categoryOptions.replaceChildren();
+      for (const category of matches) {
+        const row = document.createElement("div");
+        row.className = "category-filter__option";
+        const name = document.createElement("span");
+        name.textContent = category.label;
+        const includeButton = document.createElement("button");
+        includeButton.type = "button";
+        includeButton.textContent = "Include";
+        includeButton.addEventListener("click", () => {
+          includedCategories = [...new Set([...includedCategories, category.id])];
+          excludedCategories = excludedCategories.filter((id) => id !== category.id);
+          renderCategoryChoices();
+          renderSelectedCategories();
+        });
+        const excludeButton = document.createElement("button");
+        excludeButton.type = "button";
+        excludeButton.textContent = "Exclude";
+        excludeButton.addEventListener("click", () => {
+          excludedCategories = [...new Set([...excludedCategories, category.id])];
+          includedCategories = includedCategories.filter((id) => id !== category.id);
+          renderCategoryChoices();
+          renderSelectedCategories();
+        });
+        row.append(name, includeButton, excludeButton);
+        categoryOptions.append(row);
+      }
+      if (!matches.length) categoryOptions.textContent = "No categories found.";
+    }
+
+    function renderSelectedCategories() {
+      renderCategoryChips(includedCategories, includedCategoriesEl);
+      renderCategoryChips(excludedCategories, excludedCategoriesEl);
+    }
+
+    function renderCategoryChips(ids, container) {
+      container.replaceChildren();
+      for (const id of ids) {
+        const category = categories.find((item) => item.id === id);
+        if (!category) continue;
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "category-filter__chip";
+        chip.textContent = `${category.label} ×`;
+        chip.setAttribute("aria-label", `Remove ${category.label}`);
+        chip.addEventListener("click", () => {
+          if (container === includedCategoriesEl) {
+            includedCategories = includedCategories.filter((value) => value !== id);
+          } else {
+            excludedCategories = excludedCategories.filter((value) => value !== id);
+          }
+          renderCategoryChoices();
+          renderSelectedCategories();
+        });
+        container.append(chip);
+      }
+    }
 
     async function load() {
       grid.innerHTML = Render.cardSkeletonGrid(6);
       try {
-        const recipes = await Api.getRecipes({ category: activeCategory, query, minRating, author });
+        const recipes = await Api.getRecipes({
+          category: activeCategory, query, advancedQuery, minRating, author,
+          includeCategories: activeIncludedCategories,
+          excludeCategories: activeExcludedCategories
+        });
         grid.innerHTML = Render.recipeCardList(recipes);
         if (resultCount) {
           resultCount.textContent = `${recipes.length} recipe${recipes.length === 1 ? "" : "s"}`;
@@ -106,8 +182,13 @@
     advancedSearchButton?.addEventListener("click", () => {
       minRating = ratingFilter.value;
       author = authorFilter.value.trim();
+      advancedQuery = contentFilter.value.trim();
+      activeIncludedCategories = [...includedCategories];
+      activeExcludedCategories = [...excludedCategories];
       load();
     });
+
+    categorySearch?.addEventListener("input", renderCategoryChoices);
 
     ratingFilter?.addEventListener("change", () => {
       minRating = ratingFilter.value;

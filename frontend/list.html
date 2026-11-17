@@ -23,8 +23,8 @@
         <p class="lede" id="result-count"></p>
       </div>
         <label class="field" style="margin:0;min-width:260px;">
-        <span class="field__hint">Search recipes and comments</span>
-        <input type="search" id="search-input" placeholder="Dish, ingredient, or comment">
+        <span class="field__hint">Search recipe names</span>
+        <input type="search" id="search-input" placeholder="Recipe name">
         </label>
       </div>
 
@@ -43,6 +43,21 @@
             <span>Recipe author</span>
             <input type="search" id="author-filter" placeholder="Name or username">
           </label>
+          <label class="field">
+            <span>Ingredient or comment</span>
+            <input type="search" id="content-filter" placeholder="Ingredient or comment text">
+          </label>
+          <div class="category-filter">
+            <label class="field" for="category-search">
+              <span>Find a category</span>
+              <input type="search" id="category-search" placeholder="Search categories">
+            </label>
+            <div id="category-options" class="category-filter__options" aria-live="polite"></div>
+            <div class="category-filter__selected">
+              <div><strong>Include</strong><div id="included-categories"></div></div>
+              <div><strong>Exclude</strong><div id="excluded-categories"></div></div>
+            </div>
+          </div>
           <button class="btn btn--primary" id="advanced-search-btn" type="button">Apply filters</button>
         </div>
       </details>

@@ -4,6 +4,36 @@ __generated_with = "0.25.2"
 app = marimo.App()
 
 
+def upgrade_review_search_schema() -> None:
+    """Add review storage and lookup indexes to an existing SQLite database."""
+    from pathlib import Path
+    import sqlite3
+
+    db_path = Path(__file__).resolve().parent / "data.sqlite3"
+    with sqlite3.connect(db_path) as connection:
+        connection.executescript(
+            """
+            CREATE TABLE IF NOT EXISTS recipe_reviews (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+                rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+                comment TEXT NOT NULL,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT uq_recipe_review_user UNIQUE (user_id, recipe_id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_recipe_reviews_recipe_id
+                ON recipe_reviews(recipe_id);
+            CREATE INDEX IF NOT EXISTS idx_recipes_status_rating
+                ON recipes(status, rating);
+            CREATE INDEX IF NOT EXISTS idx_recipes_owner_id ON recipes(owner_id);
+            CREATE INDEX IF NOT EXISTS idx_ingredients_recipe_id_item
+                ON ingredients(recipe_id, item);
+            """
+        )
+
+
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
@@ -128,6 +158,8 @@ def _(connection, create_table, mo):
             CREATE INDEX IF NOT EXISTS idx_recipes_title ON recipes(title);
             CREATE INDEX IF NOT EXISTS idx_recipes_category ON recipes(category);
             CREATE INDEX IF NOT EXISTS idx_recipes_status ON recipes(status);
+            CREATE INDEX IF NOT EXISTS idx_recipes_status_rating
+                ON recipes(status, rating);
             CREATE INDEX IF NOT EXISTS idx_recipes_created_at ON recipes(created_at);
             CREATE INDEX IF NOT EXISTS idx_recipes_owner_id ON recipes(owner_id);
             CREATE INDEX IF NOT EXISTS idx_ingredients_recipe_id_item
@@ -290,4 +322,9 @@ def _(connection, mo, sqlite_master):
 
 
 if __name__ == "__main__":
-    app.run()
+    import sys
+
+    if sys.argv[1:] == ["--upgrade-review-search"]:
+        upgrade_review_search_schema()
+    else:
+        app.run()
