@@ -111,6 +111,7 @@ def create_recipe(
     giữ đúng thứ tự hiển thị — thứ tự trong JSON gửi lên là thứ tự hiển thị."""
     recipe = Recipe(
         title=payload.title,
+        cover_url=payload.cover_url,
         summary=payload.summary,
         notes=payload.notes,
         category=payload.category,

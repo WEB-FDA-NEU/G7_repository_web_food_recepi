@@ -35,6 +35,7 @@ class User(Base):
     display_name: Mapped[str] = mapped_column(String(80))
     phone: Mapped[str] = mapped_column(String(20), default="")
     role: Mapped[str] = mapped_column(String(20), default="user")  # user | admin
+    is_banned: Mapped[bool] = mapped_column(default=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utcnow
     )

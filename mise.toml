@@ -4,4 +4,5 @@ python.uv_venv_auto = "source"
 [tasks]
 sync = "uv sync"
 run = "uv run uvicorn src.main:app --reload --port 10000"
+cloudflared = "cloudflared tunnel --config cloudflared/config.yml run"
 database = "uv run marimo edit --watch database/note.py"

@@ -41,6 +41,24 @@ def list_users(
     return db.scalars(select(User).order_by(User.created_at.desc())).all()
 
 
+@router.patch("/users/{user_id}/ban", response_model=AdminUserOut)
+def set_user_banned(
+    user_id: int,
+    banned: bool,
+    admin: User = Depends(get_admin),
+    db: Session = Depends(get_db),
+):
+    user = db.get(User, user_id)
+    if user is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "We couldn't find that user.")
+    if user.id == admin.id or user.role == "admin":
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Admin accounts can't be banned here.")
+    user.is_banned = banned
+    db.commit()
+    db.refresh(user)
+    return user
+
+
 @router.get("/recipes", response_model=list[RecipeCard])
 def list_recipes(_: User = Depends(get_admin), db: Session = Depends(get_db)):
     return db.scalars(

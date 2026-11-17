@@ -12,6 +12,7 @@ dependencies = [
     "pydantic[email]>=2.13.5",
     "python-jose[cryptography]>=3.5.0",
     "psycopg[binary]>=3.2.0",
+    "python-multipart>=0.0.20",
     "sqlalchemy>=2.1.1",
     "uvicorn>=0.54.0",
     #     "bcrypt==4.2.1",

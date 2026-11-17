@@ -90,6 +90,7 @@ class RecipeCreate(BaseModel):
     # Ràng buộc tối thiểu để demo — đổi/thêm theo Business Rules thật của đề tài
     # nếu nhóm có quy định riêng (vd. giá, số bước tối thiểu...).
     title: str = Field(min_length=6, max_length=160)
+    cover_url: str = Field(default="", max_length=255)
     summary: str = Field(min_length=20)
     category: Category
     minutes: int = Field(ge=1, le=600)
@@ -99,6 +100,14 @@ class RecipeCreate(BaseModel):
     notes: str = ""
     ingredients: list[IngredientIn] = Field(min_length=1)
     steps: list[StepIn] = Field(min_length=1)
+
+    @field_validator("cover_url")
+    @classmethod
+    def validate_cover_url(cls, value: str) -> str:
+        value = value.strip()
+        if value and not value.lower().startswith(("https://", "http://", "/uploads/")):
+            raise ValueError("Use an http(s) image URL or upload an image.")
+        return value
 
 
 class RecipeReviewCreate(BaseModel):
@@ -141,6 +150,7 @@ class UserOut(BaseModel):
 class AdminUserOut(UserOut):
     email: EmailStr
     created_at: datetime
+    is_banned: bool
 
 
 class RegisterIn(BaseModel):

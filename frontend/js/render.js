@@ -36,7 +36,9 @@ const Render = (() => {
   function recipeCard(recipe) {
     return `
       <article class="recipe-card">
-        ${plate(recipe.category)}
+        ${recipe.cover_url
+          ? `<img class="recipe-card__image" src="${escapeHtml(recipe.cover_url)}" alt="${escapeHtml(recipe.title)}" loading="lazy">`
+          : plate(recipe.category)}
         <div class="recipe-card__meta">
           <span>${recipe.minutes} min</span>
           <span>·</span>
@@ -108,6 +110,7 @@ const Render = (() => {
 
     return {
       header: `
+        ${recipe.cover_url ? `<img class="recipe-detail__image" src="${escapeHtml(recipe.cover_url)}" alt="${escapeHtml(recipe.title)}">` : ""}
         <span class="hero__eyebrow">${escapeHtml(recipe.category)}</span>
         <h1 class="h1">${escapeHtml(recipe.title)}</h1>
         <p class="lede">${escapeHtml(recipe.summary)}</p>

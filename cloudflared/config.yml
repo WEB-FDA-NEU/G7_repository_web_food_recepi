@@ -1,0 +1,8 @@
+tunnel: urmom
+credentials-file: cloudflared/secret
+ingress:
+  - hostname: pies-schlechte.imsimp.ipv64.de
+    service: http://127.0.0.1:10000
+    # originRequest:
+    #   originServerName: www.dt-fwb.ipv64.de
+  - service: http_status:404

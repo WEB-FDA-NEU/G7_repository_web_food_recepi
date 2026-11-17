@@ -1,12 +1,15 @@
 import os
+from uuid import uuid4
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from .deps import get_current_user
+from .models import User
 from .routers import admin, auth, recipes
 
 
@@ -72,6 +75,36 @@ UPLOADS = (
     else Path(__file__).resolve().parent / "uploads"
 )
 UPLOADS.mkdir(exist_ok=True)
+
+
+@app.post("/api/uploads/recipe-image", status_code=status.HTTP_201_CREATED)
+async def upload_recipe_image(
+    image: UploadFile = File(...),
+    _: User = Depends(get_current_user),
+):
+    """Store a small JPEG, PNG, or WebP recipe image and return its public URL."""
+    content = await image.read(5 * 1024 * 1024 + 1)
+    await image.close()
+    if len(content) > 5 * 1024 * 1024:
+        raise HTTPException(status.HTTP_413_CONTENT_TOO_LARGE, "Images must be 5 MB or smaller.")
+
+    signatures = (
+        (content.startswith(b"\xff\xd8\xff"), "jpg"),
+        (content.startswith(b"\x89PNG\r\n\x1a\n"), "png"),
+        (content.startswith(b"RIFF") and content[8:12] == b"WEBP", "webp"),
+    )
+    extension = next((ext for valid, ext in signatures if valid), None)
+    if extension is None:
+        raise HTTPException(
+            status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            "Upload a JPEG, PNG, or WebP image.",
+        )
+
+    filename = f"{uuid4().hex}.{extension}"
+    (UPLOADS / filename).write_bytes(content)
+    return {"cover_url": f"/uploads/{filename}"}
+
+
 app.mount("/uploads", StaticFiles(directory=UPLOADS), name="uploads")
 
 if FRONTEND.is_dir():

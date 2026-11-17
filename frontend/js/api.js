@@ -12,7 +12,7 @@ const Api = (() => {
 
   async function fetchJson(path, options = {}) {
     const headers = new Headers(options.headers || {});
-    if (options.body) headers.set("Content-Type", "application/json");
+    if (options.body && !(options.body instanceof FormData)) headers.set("Content-Type", "application/json");
 
     let response;
     try {
@@ -80,7 +80,12 @@ const Api = (() => {
       }
       return "Please sign in again to continue.";
     }
-    if (status === 403) return "You don't have permission to do that.";
+    if (status === 403) {
+      if (typeof detail === "string" && /account has been banned/i.test(detail)) {
+        return "This account has been banned. Contact an administrator for help.";
+      }
+      return "You don't have permission to do that.";
+    }
     if (status === 404) return "We couldn't find that recipe. Browse recipes to find another one.";
     if (status === 400 && typeof detail === "string" && /current password/i.test(detail)) {
       return "That password is incorrect. Check it and try again.";
@@ -179,6 +184,12 @@ const Api = (() => {
     });
   }
 
+  async function uploadRecipeImage(file) {
+    const body = new FormData();
+    body.append("image", file);
+    return fetchJson(`${API_BASE}/uploads/recipe-image`, { method: "POST", body });
+  }
+
   async function getRecipeReviews(id) {
     return fetchJson(`${API_BASE}/recipes/${id}/reviews`);
   }
@@ -223,6 +234,10 @@ const Api = (() => {
     return fetchJson(`${API_BASE}/admin/users`);
   }
 
+  async function setAdminUserBanned(id, banned) {
+    return fetchJson(`${API_BASE}/admin/users/${id}/ban?banned=${banned}`, { method: "PATCH" });
+  }
+
   async function getAdminStats() {
     return fetchJson(`${API_BASE}/admin/stats`);
   }
@@ -250,6 +265,7 @@ const Api = (() => {
     login,
     register,
     createRecipe,
+    uploadRecipeImage,
     getRecipeReviews,
     saveRecipeReview,
     saveRecipe,
@@ -260,6 +276,7 @@ const Api = (() => {
     getMyRecipes,
     unsaveRecipe,
     getAdminUsers,
+    setAdminUserBanned,
     getAdminStats,
     getAdminRecipes,
     deleteAdminRecipe,

@@ -25,7 +25,7 @@ def get_current_user(
         )
     )
     user = db.get(User, login_session.user_id) if login_session else None
-    if user is None:
+    if user is None or user.is_banned:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Please sign in again to continue.")
     return user
 

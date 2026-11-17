@@ -338,6 +338,7 @@
         .filter(Boolean).map((text, index) => ({ title: `Step ${index + 1}`, text }));
       const payload = {
         title: form.title.value.trim(),
+        cover_url: form.cover_url.value.trim(),
         summary: form.summary.value.trim(),
         category: form.category.value,
         minutes: Number(form.minutes.value),
@@ -350,6 +351,11 @@
       };
 
       try {
+        const imageFile = form.cover_image.files[0];
+        if (imageFile) {
+          const uploadedImage = await Api.uploadRecipeImage(imageFile);
+          payload.cover_url = uploadedImage.cover_url;
+        }
         const recipe = await Api.createRecipe(payload);
         window.location.href = `detail.html?id=${recipe.id}`;
       } catch (error) {

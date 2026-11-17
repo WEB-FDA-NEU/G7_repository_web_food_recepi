@@ -21,6 +21,8 @@
       <div class="alert alert--error" id="form-alert" role="alert"></div>
       <form id="recipe-form">
         <div class="field"><label for="title">Recipe title</label><input id="title" name="title" required minlength="6" maxlength="160"></div>
+        <div class="field"><label for="cover_url">Recipe image URL (optional)</label><input id="cover_url" name="cover_url" type="url" maxlength="255" placeholder="https://example.com/your-dish.jpg"><span class="field__hint">Paste a direct link, or upload an image below.</span></div>
+        <div class="field"><label for="cover_image">Upload recipe image (optional)</label><input id="cover_image" name="cover_image" type="file" accept="image/jpeg,image/png,image/webp"><span class="field__hint">JPEG, PNG, or WebP; up to 5 MB.</span></div>
         <div class="field"><label for="summary">Short description</label><textarea id="summary" name="summary" required minlength="20" rows="3"></textarea></div>
         <div class="field"><label for="category">Category</label><select id="category" name="category" required>
           <option value="breakfast">Breakfast</option><option value="mains">Mains</option><option value="salads">Salads</option><option value="soups">Soups</option><option value="baking">Baking</option><option value="desserts">Desserts</option>

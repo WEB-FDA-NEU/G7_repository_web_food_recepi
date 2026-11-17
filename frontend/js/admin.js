@@ -55,6 +55,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         cell.textContent = value;
         row.append(cell);
       }
+      appendTextCell(row, user.is_banned ? "Banned" : "Active");
+      const actions = document.createElement("td");
+      if (user.role !== "admin") {
+        const actionLabel = user.is_banned ? "Unban user" : "Ban user";
+        actions.append(deleteButton(actionLabel, async (button) => {
+          const nextBanned = !user.is_banned;
+          const confirmed = window.confirm(`${actionLabel}: ${user.display_name}?`);
+          if (!confirmed) return;
+          await runDelete(button, async () => {
+            const updatedUser = await Api.setAdminUserBanned(user.id, nextBanned);
+            user.is_banned = updatedUser.is_banned;
+            row.cells[row.cells.length - 2].textContent = user.is_banned ? "Banned" : "Active";
+            button.textContent = user.is_banned ? "Unban user" : "Ban user";
+            actionMessage.textContent = user.is_banned ? "User banned." : "User unbanned.";
+          });
+        }));
+      }
+      row.append(actions);
       userTable.append(row);
     }
 

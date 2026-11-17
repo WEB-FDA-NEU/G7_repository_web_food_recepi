@@ -11,9 +11,16 @@ def initialize_schema() -> None:
     same database setup entry point. Existing tables are left intact.
     """
     from src import models as _models  # noqa: F401 - register model metadata
+    from sqlalchemy import inspect, text
+
     from src.database import Base, engine
 
     Base.metadata.create_all(bind=engine)
+    if "is_banned" not in {column["name"] for column in inspect(engine).get_columns("users")}:
+        with engine.begin() as connection:
+            connection.execute(
+                text("ALTER TABLE users ADD COLUMN is_banned BOOLEAN NOT NULL DEFAULT FALSE")
+            )
 
 
 def upgrade_review_search_schema() -> None:
@@ -100,6 +107,7 @@ def _(connection, create_table, mo):
                 phone TEXT NOT NULL DEFAULT '',
                 role TEXT NOT NULL DEFAULT 'user'
                     CHECK (role IN ('user', 'admin')),
+                is_banned INTEGER NOT NULL DEFAULT 0,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             );
 

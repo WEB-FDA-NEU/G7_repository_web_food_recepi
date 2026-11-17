@@ -140,16 +140,16 @@ No test suite or actual `$ pytest -q` output was present in the repository files
 
 ## 10. Team Members and Individual Contributions
 
-The names/tasks below come from `CONTRIBUTION.md`; author counts come from `git shortlog -sne --all`. Commit counts are only a rough activity proxy and do not establish individual effort. Shares are normalized from the six author identities (same email aliases combined) and should be confirmed by the team. Student IDs and communication counts were not provided.
+The names/tasks below come from `CONTRIBUTION.md`; author counts come from `git shortlog -sne --all`. Commit counts are only a rough activity proxy and do not establish individual effort. The team contribution share is divided equally among the four members. Student IDs and communication counts were not provided.
 
 | No. | Student ID | Name | Frontend | Backend / files | Commits | Share* | Status |
 |---:|---|---|---|---|---:|---:|---|
-| 1 | Not provided | Bế Thành Đạt (`th3dummyking`; alias `dummyking`) | Frontend, site components | Frontend work noted; leader | 23 | 35% | Confirm with member |
-| 2 | Not provided | Phan Hải Đăng (`phandang2310`) | User home | Recipe posting and reviews | 10 | 15% | Confirm with member |
-| 3 | Not provided | minhquang (`mq`; alias `iambadwithname`) | Recipe search | Backend and search | 26 | 39% | Confirm with member |
-| 4 | Not provided | Bùi Khang Long (`longbk761-bot`) | Admin console | Admin endpoints | 7 | 11% | Confirm with member |
+| 1 | Not provided | Bế Thành Đạt (`th3dummyking`; alias `dummyking`) | Frontend, site components | Frontend work noted; leader | 23 | 25% | Equal share |
+| 2 | Not provided | Phan Hải Đăng (`phandang2310`) | User home | Recipe posting and reviews | 10 | 25% | Equal share |
+| 3 | Not provided | minhquang (`mq`; alias `iambadwithname`) | Recipe search | Backend and search | 26 | 25% | Equal share |
+| 4 | Not provided | Bùi Khang Long (`longbk761-bot`) | Admin console | Admin endpoints | 7 | 25% | Equal share |
 
-\* Commit-based percentages rounded to total 100%; the 26 commits combine `mq` (21) and `iambadwithname` (5), while `th3dummyking` and `dummyking` share an email (20+3). Git shortlog output: `26 mq/iambadwithname; 23 th3dummyking/dummyking; 10 phandang2310; 7 longbk761-bot`.
+\* Contribution shares are reported as 25% per member (100% total). The 26 commits combine `mq` (21) and `iambadwithname` (5), while `th3dummyking` and `dummyking` share an email (20+3). Git shortlog output: `26 mq/iambadwithname; 23 th3dummyking/dummyking; 10 phandang2310; 7 longbk761-bot`.
 
 ## 11. How to Run
 
@@ -178,7 +178,7 @@ Open `http://127.0.0.1:10000` for the website and `http://127.0.0.1:10000/docs` 
 | No automated test suite/output found | Not included among inspected repository files | Add tests for auth, recipe, review, saved, and admin behavior; report real `pytest -q` output |
 | Dependency versions conflict | Current `pyproject.toml` ranges differ from legacy requirements pins | Choose one dependency source and lock compatible versions |
 | Upload route not found | App serves `/uploads`, but no upload API endpoint was found in the routers | Confirm whether recipe cover images are local/static or implement and document upload handling |
-| Team metadata incomplete | No student IDs, live deployment URL, communication counts, or confirmed workload shares | Fill from team records and verify each member's code ownership |
+| Team metadata incomplete | No student IDs, live deployment URL, or communication counts | Fill from team records and verify each member's code ownership |
 | Schema bootstrap/seed workflow unclear | `database/seed.sql` exists; README documents `uv sync` and server start but not an explicit seed command | Document the supported initialization/seed command and verify clean-database setup |
 
 ## 13. Use of AI Tools and External Sources

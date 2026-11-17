@@ -87,6 +87,8 @@ def login(payload: LoginIn, response: Response, db: Session = Depends(get_db)):
             status.HTTP_401_UNAUTHORIZED,
             "The email or password doesn't match.",
         )
+    if user.is_banned:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "This account has been banned.")
     return _start_session(user, db, response)
 
 
