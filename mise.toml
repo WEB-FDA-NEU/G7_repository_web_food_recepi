@@ -1,6 +1,6 @@
 [settings]
 python.uv_venv_auto = "source"
-
+#  lệnh bắt đầu với mise + "lệnh bên dưới"
 [tasks]
 #sync env
 sync = "uv sync"
