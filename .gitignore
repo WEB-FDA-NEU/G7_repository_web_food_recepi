@@ -2,4 +2,6 @@
 # .python-version
 # mise.toml
 **/__pycache__
+**/__mairmo__
+# .env
 AGENTS.md

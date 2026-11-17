@@ -2,10 +2,6 @@
 python.uv_venv_auto = "source"
 
 [tasks]
-#sync env
 sync = "uv sync"
-#run localhost
 run = "uv run uvicorn src.main:app --reload --port 10000"
-#run 0.0.0.0
-run2 = "uv run uvicorn src.main:app --host 0.0.0.0 --reload --port 10000"
-database = "uv run marimo edit database/note.py"
+database = "uv run marimo edit --watch database/note.py"
